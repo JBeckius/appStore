@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import apiManager from './api/apiManager.js'
+import 'bootstrap'
+import "bootstrap/scss/bootstrap.scss"
 Vue.config.productionTip = false
 console.log(process.env);
 
