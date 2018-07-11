@@ -4,15 +4,15 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Version History</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<button type="button" v-on:click="close" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="col font-weight-bold">
-							<h4>{{applicationName}}</h4>
-							<p class="mb-0">Version {{latestVersion versions}}</p>
+							<h4>{{appData.applicationName}}</h4>
+							<p class="mb-0">Version {{latestVersion}}</p>
 						</div>
 					</div>
 					<form id="versionHistoryForm">
@@ -28,11 +28,7 @@
 								</tr>
 								</thead>
 								<tbody>
-								{{#if versions}}
-									{{#each versions as |version|}}
-										{{> version}}
-									{{/each}}
-								{{/if}}
+									<Version v-for="version in appData.versions" :version="version" />
 								</tbody>
 							</table>
 						</div>
@@ -52,7 +48,7 @@
 				</div>
 				<div class="modal-footer">
 						<span class="m-auto">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="button" v-on:click="close" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							<button type="button" class="btn btn-primary">Update</button>
 						</span>
 				</div>
@@ -62,13 +58,40 @@
 </template>
 
 <script>
+	import moment from 'moment';
+	import modalMixin from './appModalMixin.js';
+	import Version from './partials/version.vue';
 
 	export default {
 		name: 'versionHistoryModal',
-		props: ['appData']
+		props: ['appData', 'close'],
+		mixins: [modalMixin],
+		components: {Version},
+		methods: {
+			formatDate(rawDate) {
+				return moment(rawDate).format("MM/DD/YYYY");
+			}
+		},
+		methods: {
+		}
 	}
 </script>
 
 <style scoped>
+	.versionHistoryModal {
+		/* width: 80%;
+		margin: 10% 10%;
+		height: 80%;
+		position: fixed;
+		top: 0;
+		left: 0; */
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 80%;
+		margin: 0 10%;
+		height: 100%;
 
+
+	}
 </style>
