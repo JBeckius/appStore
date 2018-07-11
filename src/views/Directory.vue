@@ -26,7 +26,7 @@
 			</div>
 		</div>
 		<SettingsModal v-if="showSettings" :appData="currentApp" :close="deselectApp" :showVersions="toggleVersionsModal"/>
-		<VersionHistoryModal v-if="showVersions" :appData="currentApp" />
+		<VersionHistoryModal v-if="showVersions" :appData="currentApp" :close="toggleVersionsModal"/>
 	</div>
 </template>
 
@@ -34,9 +34,11 @@
 import apiManager from '../api/apiManager.js';
 import AppNode from '../components/app.vue';
 import SettingsModal from '../components/modals/settingsModal.vue';
+import VersionHistoryModal from '../components/modals/versionHistoryModal.vue';
+
 export default {
 	name: 'directory',
-	components: {AppNode, SettingsModal},
+	components: {AppNode, SettingsModal, VersionHistoryModal},
 	data() {
 		return {
 			apps: [],
@@ -293,6 +295,8 @@ export default {
 			console.log('deselecting app');
 			this.selectedAppInd = -1;
 		},
+		toggleVersionsModal() {
+			this.showVersions = !this.showVersions;
 		}
 	},
 	beforeMount() {
