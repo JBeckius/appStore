@@ -39,7 +39,11 @@
 		},
 		methods: {
 			getAuthorized() {
-				this.$store.dispatch('getAccessToken', {username: this.username, password: this.password})
+				let creds = {
+					username: this.username,
+					password: this.password
+				};
+				this.$store.dispatch('getAccessToken', creds)
 					.then()
 					.catch(err => console.log('did not get authed: ', err));
 			}
