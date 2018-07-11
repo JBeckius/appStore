@@ -1,6 +1,7 @@
 import { Assets } from "./assets.js";
 import { Authenticate } from "./authenticate.js";
 import { Leaderboards } from "./leaderboards.js";
+import { Token } from "./token.js";
 
 class apiManager {
 
@@ -15,6 +16,7 @@ class apiManager {
 		//Authenticate object
 		this.Authenticate = new Authenticate(this.baseURLPath);
 
+		this.Token = new Token(this.baseURLPath);
 		//CRUD based objects
 		this.assets = new Assets(this.baseURLPath, this.baseCDNPath);
 		this.leaderboards = new Leaderboards(this.baseURLPath);
@@ -24,6 +26,7 @@ class apiManager {
 		this.Authenticate.setUserHeader(userId);
 		this.assets.setUserHeader(userId);
 		this.leaderboards.setUserHeader(userId);
+
 	}
 
 	setAccessNational(nationalId) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export class baseAPI {
-	
+
 	constructor(baseURLPath) {
 		this.axiosObject = axios.create({
 			baseURL: baseURLPath
@@ -15,5 +15,9 @@ export class baseAPI {
 
 	setNationalUserHeader(nationalId) {
 		this.axiosObject.defaults.headers.common['DPTS_ID'] = nationalId;
+	}
+
+	setAuthorizationHeader(authToken) {
+		this.axiosObject.defaults.headers.common['Authorization'] = ('Bearer ' + authToken);
 	}
 }
