@@ -138,10 +138,13 @@
 			}
 		},
 		data() {
-			return {
-				isAdmin: true
-			}
+			return {}
 		},
+		computed: {
+			isAdmin() {
+				return this.$store.getters.isAdmin ;
+			}
+		}
 	}
 </script>
 

@@ -64,27 +64,15 @@
 		name: 'configMapping',
 		data() {
 			return {
-				clients: [
-					{
-						id: 1,
-						clientName: "Bob"
-					},
-					{
-						id: 2,
-						clientName: "Judy"
-					}
-				],
-				apps: [
-					{
-						applicationId: 1,
-						applicationName: "app1"
-					},
-					{
-						applicationId: 2,
-						applicationName: "app2"
-					}
-				],
 				currentTab: 0
+			}
+		},
+		computed: {
+			apps() {
+				return this.$store.state.apps;
+			},
+			clients() {
+				return this.$store.state.clients;
 			}
 		},
 		methods: {
