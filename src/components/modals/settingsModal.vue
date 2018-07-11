@@ -117,9 +117,11 @@
 
 <script>
 	import moment from 'moment';
+	import modalMixin from './appModalMixin.js';
 
 	export default {
 		name: 'settingsModal',
+		mixins: [modalMixin],
 		// props: ['appData', 'close'],
 		props: {
 			appData: {
@@ -140,19 +142,6 @@
 				isAdmin: true
 			}
 		},
-		computed: {
-			latestVersion() {
-				let versions = this.appData.versions;
-				return (versions && versions.length) > 0 ? versions[0].version : "No version #";
-			},
-			fileSize() {
-				let versions = this.appData.versions;
-				return (versions && versions.length) > 0 ? versions[0].fileSize : "No file size";
-			},
-			lastUpdatedDate() {
-				return moment(this.appData.lastUpdated).format("MM/DD/YYYY");
-			}
-		}
 	}
 </script>
 
