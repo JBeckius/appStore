@@ -29,7 +29,7 @@
 			<div class="form-row align-items-center">
 				<div class="col-auto my-1">
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" id="disablePreviousVersion" name="disablePreviousVersion">
+						<input v-model="disablePreviousVersion" class="form-check-input" type="checkbox" id="disablePreviousVersion" name="disablePreviousVersion">
 						<label class="form-check-label" for="disablePreviousVersion">
 							Disable Previous Version
 						</label>
@@ -51,6 +51,11 @@
 <script>
 	export default {
 		name: 'securitySettings',
+		data() {
+			return {
+				disablePreviousVersion: false
+			}
+		},
 		computed: {
 			clients() {
 				return this.$store.state.clients;
