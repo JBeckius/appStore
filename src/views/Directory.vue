@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<div class="row appsDirectory">
-					<AppNode v-for="app in apps" :appData="app"/>
+					<AppNode v-for="(app, index) in apps" :appData="app" :selectApp="selectApp" :index="index"/>
 					<!-- {{#if apps}}
 						{{#each apps as |app|}}
 							{{> app}}
@@ -25,18 +25,31 @@
 				</div>
 			</div>
 		</div>
+		<SettingsModal v-if="showSettings" :appData="currentApp" :close="deselectApp" :showVersions="toggleVersionsModal"/>
+		<VersionHistoryModal v-if="showVersions" :appData="currentApp" />
 	</div>
 </template>
 
 <script>
 import apiManager from '../api/apiManager.js';
 import AppNode from '../components/app.vue';
+import SettingsModal from '../components/modals/settingsModal.vue';
 export default {
 	name: 'directory',
-	components: {AppNode},
+	components: {AppNode, SettingsModal},
 	data() {
 		return {
-			apps: []
+			apps: [],
+			selectedAppInd: -1,
+			showVersions: false
+		}
+	},
+	computed: {
+		currentApp() {
+			return this.apps[this.selectedAppInd];
+		},
+		showSettings() {
+			return this.selectedAppInd >= 0 ? true : false;
 		}
 	},
 	methods: {
@@ -270,6 +283,16 @@ export default {
 		      "groupIds": []
 		    }
   		];
+		},
+		selectApp(index) {
+			console.log('selecting app: ', index, this.selectedAppInd);
+			this.selectedAppInd = index;
+			console.log('selectedApp: ', this.selectedAppInd, this);
+		},
+		deselectApp() {
+			console.log('deselecting app');
+			this.selectedAppInd = -1;
+		},
 		}
 	},
 	beforeMount() {
