@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
 			<router-link to="/directory">Directory</router-link> |
+			<router-link to="/uploadApp">Upload App</router-link> |
 			<router-link to="/configMapping">Config Mapping</router-link>
     </div>
     <router-view/>
