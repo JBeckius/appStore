@@ -7,7 +7,7 @@
 					<div class="input-group mb-3">
 						<input v-model="appIcon" type="text" class="form-control" id="appIcon" name="appIcon"
 									 placeholder="Upload Application Icon">
-						<input v-model="appIconFile" type="file" accept="image/*" class="d-none" id="appIconFile"
+						<input v-on:change="" type="file" accept="image/*" class="d-none" id="appIconFile"
 									 name="appIconFile"/>
 						<div class="input-group-append">
 							<button class="btn btn-outline-secondary" name="appIconFileBtn"
@@ -25,7 +25,7 @@
 					<div class="input-group mb-3">
 						<input v-model="ipaFileName" type="text" class="form-control" id="ipaFileName" name="ipaFileName"
 									 placeholder="Enterprise Distribution File(.IPA)">
-						<input v-model="ipaFile" type="file" class="d-none" id="ipaFile" name="ipaFile"/>
+						<input v-on:change="" type="file" class="d-none" id="ipaFile" name="ipaFile"/>
 						<div class="input-group-append">
 							<button class="btn btn-outline-secondary" name="ipaFileBtn" id="ipaFileBtn"
 											type="button">Upload
@@ -37,7 +37,7 @@
 					<div class="input-group mb-3">
 						<input v-model="apkFileName" type="text" class="form-control" name="apkFileName" id="apkFileName"
 									 placeholder="Android File(.APk)">
-						<input v-model="apkFile" type="file" class="d-none" id="apkFile" name="apkFile"/>
+						<input v-on:change="" type="file" class="d-none" id="apkFile" name="apkFile"/>
 						<div class="input-group-append">
 							<button class="btn btn-outline-secondary" name="apkFileBtn" id="apkFileBtn"
 											type="button">Upload
@@ -52,7 +52,15 @@
 
 <script>
 	export default {
-		name: 'applicationFiles'
+		name: 'applicationFiles',
+		data() {
+			return {
+				appIcon: null,
+				bundleId: null,
+				ipaFileName: null,
+				apkFileName: null
+			}
+		}
 	}
 </script>
 

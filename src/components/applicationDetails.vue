@@ -6,11 +6,7 @@
 				<div class="form-group col-md-3">
 					<select class="form-control" id="relatedApps" name="relatedApps">
 						<option value="" selected="selected">Related Application</option>
-						{{#if apps}}
-							{{#each apps as |app|}}
-								<option value="{{app.applicationId}}">{{app.applicationName}}</option>
-							{{/each}}
-						{{/if}}
+						<option v-if="apps" v-for="app in apps" :value="app.applicationId">{{app.applicationName}}</option>
 					</select>
 				</div>
 				<div class="form-group col-md-6">
@@ -32,11 +28,7 @@
 				<div class="form-group col-md-4">
 					<select class="form-control" id="subdirectory" name="subdirectory">
 						<option value="" selected="selected">Subdirectory</option>
-						{{#if subdirectories}}
-							{{#each subdirectories as |subdirectory|}}
-								<option value="{{subdirectory.id}}">{{subdirectory.name}}</option>
-							{{/each}}
-						{{/if}}
+						<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory.id">{{subdirectory.name}}</option>
 					</select>
 				</div>
 				<div class="form-group col-md-8">
@@ -53,7 +45,26 @@
 
 <script>
 	export default {
-		name: 'applicationDetails'
+		name: 'applicationDetails',
+		data() {
+			return {
+				subdirectories: [
+					{
+						id: 1,
+						name: 'sub1'
+					},
+					{
+						id: 2,
+						name: 'sub2'
+					}
+				]
+			}
+		},
+		computed: {
+			apps() {
+				return this.$store.state.apps;
+			}
+		}
 	}
 </script>
 

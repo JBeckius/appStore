@@ -6,11 +6,7 @@
 				<div class="form-group col-md-4 my-1">
 					<select class="form-control" id="clients" name="clients" required>
 						<option value="" class="dropDownPlaceHolder">Select Client</option>
-						{{#if clients}}
-							{{#each clients as |client|}}
-								<option value="{{client.id}}">{{client.clientName}}</option>
-							{{/each}}
-						{{/if}}
+						<option v-if="clients" v-for="client in clients" :value="client.id">{{client.clientName}}</option>
 					</select>
 					<div class="d-none" id="curcli">
 
@@ -54,7 +50,12 @@
 
 <script>
 	export default {
-		name: 'securitySettings'
+		name: 'securitySettings',
+		computed: {
+			clients() {
+				return this.$store.state.clients;
+			}
+		}
 	}
 </script>
 
