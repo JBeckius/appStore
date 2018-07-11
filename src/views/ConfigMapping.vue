@@ -1,0 +1,75 @@
+<template>
+	<div class="tab-content" id="configMappingTabs">
+		<div class="tab-pane fade show active" id="applicationTab" role="tabpanel">
+			<div class="alert alert-secondary">
+				<p class="mb-0">You may add an additional AD group for an application here. Applications
+					inherit an AD group based on their client</p>
+			</div>
+			<form id="configMappingApplicationForm">
+				<h3>1. Choose an application</h3>
+				<div class="form-group">
+					<select class="form-control" id="configApplication" name="configApplication">
+						{{#if apps}}
+							{{#each apps as |app|}}
+								<option value="{{app.applicationId}}">{{app.applicationName}}</option>
+							{{/each}}
+						{{/if}}
+					</select>
+				</div>
+				<h3>2. Define Group</h3>
+				<div class="form-group">
+					<input type="text" class="form-control" id="configApplicationGroup" name="configApplicationGroup"
+								 placeholder="AD Group Name" required>
+					<div class="invalid-feedback">
+						Please enter a Group Name.
+					</div>
+				</div>
+				<button class="btn btn-primary btn-center mt-3" type="submit">Submit</button>
+			</form>
+			<div class="configMappingApplicationMessage"></div>
+		</div>
+		<div class="tab-pane fade" id="clientsTab" role="tabpanel">
+			<div class="alert alert-secondary">
+				<p class="mb-0">You may modify the AD group for a specific client, or add clients to the
+					system</p>
+			</div>
+			<form id="configMappingClientsForm">
+				<h3>1. Choose an client</h3>
+				<div class="form-group">
+					<select class="form-control" id="configClient" name="configClient" required>
+						<option value="">Clients</option>
+						{{#if clients}}
+							{{#each clients as |client|}}
+								<option value="{{client.id}}">{{client.clientName}}</option>
+							{{/each}}
+						{{/if}}
+					</select>
+					<div class="invalid-feedback">
+						Please enter a Client Name.
+													</div>
+				</div>
+				<h3>2. Define Group</h3>
+				<div class="form-group">
+					<input type="text" class="form-control" id="configClientGroup" name="configClientGroup"
+								 placeholder="AD Group Name" required>
+					<div class="invalid-feedback">
+						Please enter a Group Name.
+					</div>
+				</div>
+				<button class="btn btn-primary btn-center mt-3" type="submit">Submit</button>
+			</form>
+			<div class="configMappingClientMessage"></div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		name: 'configMapping',
+
+	};
+</script>
+
+<style scoped>
+
+</style>
