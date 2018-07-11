@@ -1,6 +1,10 @@
 <template>
 	<div class="tab-content" id="configMappingTabs">
-		<div class="tab-pane fade show active" id="applicationTab" role="tabpanel">
+		<div class="configNav">
+			<div class="application" :class="{activeTab: (currentTab===0)}" v-on:click="changeTab(0)">Application</div>
+			<div class="clients" :class="{activeTab: (currentTab===1)}" v-on:click="changeTab(1)">Clients</div>
+		</div>
+		<div v-if="currentTab === 0" class="tab-pane fade show active" id="applicationTab" role="tabpanel">
 			<div class="alert alert-secondary">
 				<p class="mb-0">You may add an additional AD group for an application here. Applications
 					inherit an AD group based on their client</p>
@@ -9,11 +13,7 @@
 				<h3>1. Choose an application</h3>
 				<div class="form-group">
 					<select class="form-control" id="configApplication" name="configApplication">
-						{{#if apps}}
-							{{#each apps as |app|}}
-								<option value="{{app.applicationId}}">{{app.applicationName}}</option>
-							{{/each}}
-						{{/if}}
+						<option v-if="apps" v-for="app in apps" :value="app.applicationId">{{app.applicationName}}</option>
 					</select>
 				</div>
 				<h3>2. Define Group</h3>
@@ -28,7 +28,7 @@
 			</form>
 			<div class="configMappingApplicationMessage"></div>
 		</div>
-		<div class="tab-pane fade" id="clientsTab" role="tabpanel">
+		<div v-if="currentTab === 1" class="tab-pane fade show active" id="clientsTab" role="tabpanel">
 			<div class="alert alert-secondary">
 				<p class="mb-0">You may modify the AD group for a specific client, or add clients to the
 					system</p>
@@ -38,11 +38,7 @@
 				<div class="form-group">
 					<select class="form-control" id="configClient" name="configClient" required>
 						<option value="">Clients</option>
-						{{#if clients}}
-							{{#each clients as |client|}}
-								<option value="{{client.id}}">{{client.clientName}}</option>
-							{{/each}}
-						{{/if}}
+								<option v-if="clients" v-for="client in clients" :value="client.id">{{client.clientName}}</option>
 					</select>
 					<div class="invalid-feedback">
 						Please enter a Client Name.
@@ -66,10 +62,42 @@
 <script>
 	export default {
 		name: 'configMapping',
+		data() {
+			return {
+				clients: [
+					{
+						id: 1,
+						clientName: "Bob"
+					},
+					{
+						id: 2,
+						clientName: "Judy"
+					}
+				],
+				apps: [
+					{
+						applicationId: 1,
+						applicationName: "app1"
+					},
+					{
+						applicationId: 2,
+						applicationName: "app2"
+					}
+				],
+				currentTab: 0
+			}
+		},
+		methods: {
+			changeTab(index) {
+				this.currentTab = index;
+			}
+		}
 
 	};
 </script>
 
 <style scoped>
-
+	.activeTab {
+		color: #A5DBC2;
+	}
 </style>
