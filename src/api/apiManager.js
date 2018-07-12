@@ -2,6 +2,9 @@ import { Assets } from "./assets.js";
 import { Authenticate } from "./authenticate.js";
 import { Leaderboards } from "./leaderboards.js";
 import { Token } from "./token.js";
+import { Apps } from "./apps.js";
+import { Groups } from './groups.js';
+import { Subdirectories } from './subdirectories.js';
 
 class apiManager {
 
@@ -20,13 +23,21 @@ class apiManager {
 		//CRUD based objects
 		this.assets = new Assets(this.baseURLPath, this.baseCDNPath);
 		this.leaderboards = new Leaderboards(this.baseURLPath);
+		this.apps = new Apps(this.baseURLPath);
+		this.groups = new Groups(this.baseURLPath);
+		this.subdirectories = new Subdirectories(this.baseURLPath);
 	}
 
 	setAccessDefault(userId) {
 		this.Authenticate.setUserHeader(userId);
 		this.assets.setUserHeader(userId);
 		this.leaderboards.setUserHeader(userId);
+	}
 
+	setAuthDefault(token) {
+		this.apps.setAuthorizationHeader(token);
+		this.groups.setAuthorizationHeader(token);
+		this.subdirectories.setAuthorizationHeader(token);
 	}
 
 	setAccessNational(nationalId) {
