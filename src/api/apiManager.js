@@ -5,6 +5,7 @@ import { Token } from "./token.js";
 import { Apps } from "./apps.js";
 import { Groups } from './groups.js';
 import { Subdirectories } from './subdirectories.js';
+import { User } from './user.js';
 
 class apiManager {
 
@@ -26,6 +27,7 @@ class apiManager {
 		this.apps = new Apps(this.baseURLPath);
 		this.groups = new Groups(this.baseURLPath);
 		this.subdirectories = new Subdirectories(this.baseURLPath);
+		this.user = new User(this.baseURLPath);
 	}
 
 	setAccessDefault(userId) {
@@ -38,6 +40,7 @@ class apiManager {
 		this.apps.setAuthorizationHeader(token);
 		this.groups.setAuthorizationHeader(token);
 		this.subdirectories.setAuthorizationHeader(token);
+		this.user.setAuthorizationHeader(token);
 	}
 
 	setAccessNational(nationalId) {
