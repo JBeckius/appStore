@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link> |
-			<router-link to="/directory">Directory</router-link> |
-			<router-link to="/uploadApp">Upload App</router-link> |
-			<router-link to="/configMapping">Config Mapping</router-link> |
-			<a class="logout" v-on:click="logout">Logout</a>
+			<router-link to="/">Directory</router-link> |
+			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/uploadApp">Upload App</router-link> | </span>
+			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/configMapping">Config Mapping</router-link> | </span>
+			<a class="logout" v-on:click="logout"> Logout</a>
     </div>
     <router-view/>
   </div>
@@ -20,6 +20,11 @@
 				localStorage.removeItem('access_token');
 				localStorage.removeItem('expires_in');
 				this.$router.push('login');
+			}
+		},
+		computed: {
+			isAdmin() {
+				return this.$store.getters.isAdmin;
 			}
 		}
 	}

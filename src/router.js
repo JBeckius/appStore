@@ -14,7 +14,7 @@ let router =  new Router({
 	base: '/app',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home
     },
@@ -32,7 +32,7 @@ let router =  new Router({
       component: About
     },
 		{
-			path: '/directory',
+			path: '/',
 			name: 'directory',
 			component: Directory,
 			meta: {
