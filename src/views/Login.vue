@@ -43,9 +43,9 @@
 					username: this.username,
 					password: this.password
 				};
-				this.$store.dispatch('getAccessToken', creds)
+				this.$store.dispatch('authenticate', creds)
 					.then(resp => {
-						this.$router.push('directory');
+						this.$router.push('/');
 					})
 					.catch(err => console.log('did not get authed: ', err));
 			}
