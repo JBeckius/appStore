@@ -5,11 +5,25 @@
       <router-link to="/about">About</router-link> |
 			<router-link to="/directory">Directory</router-link> |
 			<router-link to="/uploadApp">Upload App</router-link> |
-			<router-link to="/configMapping">Config Mapping</router-link>
+			<router-link to="/configMapping">Config Mapping</router-link> |
+			<a class="logout" v-on:click="logout">Logout</a>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+	export default {
+		name: 'App',
+		methods: {
+			logout(){
+				localStorage.removeItem('access_token');
+				localStorage.removeItem('expires_in');
+				this.$router.push('login');
+			}
+		}
+	}
+</script>
 
 <style>
 #app {
