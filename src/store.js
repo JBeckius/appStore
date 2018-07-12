@@ -257,10 +257,18 @@ export default new Vuex.Store({
 		},
 		setAccessToken(state, token) {
 			state.accessToken = token;
+			apiManager.setAuthDefault(token);
 		}
   },
   actions: {
 		updateApps({ commit }) {
+			return apiManager.apps.get()
+				.then(resp => {
+					console.log('gotApps: ', resp);
+				})
+				.catch(err => console.log('got no apps: ', err))
+		},
+		addGroup({ commit }, group) {
 
 		},
 		updateGroups({ commit }) {
@@ -269,11 +277,12 @@ export default new Vuex.Store({
 		updateSubdirectories({ commit }) {
 
 		},
-		getAccessToken({ commit }, creds) {
+		getAccessToken({ commit, dispatch }, creds) {
 			return apiManager.Token.getToken(creds)
 			.then(resp => {
 				let token = resp.data.access_token;
-				localStorage.set('access_token', token);
+				localStorage.setItem('access_token', token);
+				dispatch('updateApps');
 				return commit( 'setAccessToken', token );
 			})
 
