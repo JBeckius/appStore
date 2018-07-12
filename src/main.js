@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/store'
 import apiManager from './api/apiManager.js'
 import 'bootstrap'
 import "bootstrap/scss/bootstrap.scss"
