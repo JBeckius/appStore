@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import apiManager from './api/apiManager.js';
+import apiManager from '../api/apiManager.js';
 
 Vue.use(Vuex)
 
@@ -247,7 +247,7 @@ export default new Vuex.Store({
 	},
   mutations: {
 		updateApps(state, apps) {
-			state.apps = apps;
+			if(apps.length > 0) state.apps = apps;
 		},
 		updateGroups(state, groups) {
 			state.groups = groups;
@@ -258,11 +258,36 @@ export default new Vuex.Store({
 		setAccessToken(state, token) {
 			state.accessToken = token;
 			apiManager.setAuthDefault(token);
+		},
+		setUserRole(state, role) {
+			state.user = {
+				role
+			}
 		}
   },
   actions: {
+		authenticate({ commit, dispatch }, creds) {
+			return dispatch('getAccessToken', creds)
+				.then(() =>{
+					return dispatch('getUserRole')
+				})
+				.then(resp => {
+					console.log('authenticated: ', resp);
+				})
+				.catch('failed to auth');
+		},
+		getUserRole() {
+			apiManager.user.getUserRole()
+				.then(resp => {
+					//TODO set user role properly
+					console.log('getUserRole: ', resp.data);
+					// return commit('setUserRole', res)
+				})
+				.catch(err => console.log('user role fail: ', err));
+		},
+
 		updateApps({ commit }) {
-			return apiManager.apps.get()
+			return apiManager.apps.getAll()
 				.then(resp => {
 					console.log('gotApps: ', resp);
 				})
@@ -282,8 +307,8 @@ export default new Vuex.Store({
 			.then(resp => {
 				let token = resp.data.access_token;
 				localStorage.setItem('access_token', token);
-				dispatch('updateApps');
-				return commit( 'setAccessToken', token );
+				commit( 'setAccessToken', token );
+				return dispatch('updateApps');
 			})
 
 		}
