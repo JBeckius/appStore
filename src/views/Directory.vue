@@ -6,7 +6,7 @@
 					<div class="col">
 						<form id="appSearchForm">
 							<div class="input-group mb-3">
-								<input type="text" class="form-control" name="query" id="query"
+								<input v-model="searchText" type="text" class="form-control" name="query" id="query"
 								       placeholder="Search by app name or subdirectory">
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary" type="submit">Search</button>
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<div class="row appsDirectory">
-					<AppNode v-for="(app, index) in apps" :appData="app" :selectApp="selectApp" :index="index"/>
+					<AppNode v-for="(app, index) in filteredApps" :appData="app" :selectApp="selectApp" :index="index"/>
 					<!-- {{#if apps}}
 						{{#each apps as |app|}}
 							{{> app}}
@@ -42,7 +42,8 @@ export default {
 	data() {
 		return {
 			selectedAppInd: -1,
-			showVersions: false
+			showVersions: false,
+			searchText: ""
 		}
 	},
 	computed: {
@@ -54,6 +55,16 @@ export default {
 		},
 		showSettings() {
 			return this.selectedAppInd >= 0 ? true : false;
+		},
+		filteredApps() {
+			//TODO only filters by app name and description
+			if(this.searchText === "") return this.apps;
+			let searchText = this.searchText.toLowerCase();
+			return this.apps.filter(app => {
+				return app.applicationName.toLowerCase().includes(searchText) ? true :
+							 // app.description.includes(searchText) 		? true :
+							 																					 false;
+			});
 		}
 	},
 	methods: {
