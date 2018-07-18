@@ -4,8 +4,8 @@
 		<div class="card-body">
 			<div class="form-row">
 				<div class="form-group col-md-4 my-1">
-					<select class="form-control" id="clients" name="clients" required>
-						<option value="" class="dropDownPlaceHolder">Select Client</option>
+					<select v-model="clientId" class="form-control" id="clients" name="clients" required>
+						<option :value="{}" class="dropDownPlaceHolder">Select Client</option>
 						<option v-if="clients" v-for="client in clients" :value="client.id">{{client.clientName}}</option>
 					</select>
 					<div class="d-none" id="curcli">
@@ -16,14 +16,16 @@
 					</div>
 				</div>
 				<div class="form-group col-md-4 my-1">
-					<label class="sr-only" for="startDate">Start Date</label>
+					<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date"/>
+					<!-- <label class="sr-only" for="startDate">Start Date</label>
 					<input type="text" class="form-control" name="dateStart" id="dateStart"
-								 placeholder="Start Date">
+								 placeholder="Start Date"> -->
 				</div>
 				<div class="form-group col-md-4 my-1">
-					<label class="sr-only" for="endDate">End Date</label>
+					<DatePicker class="datePicker form-control" v-model="dateEnd" placeholder="End Date"/>
+					<!-- <label class="sr-only" for="endDate">End Date</label>
 					<input type="text" class="form-control" name="dateEnd" id="dateEnd"
-								 placeholder="End Date">
+								 placeholder="End Date"> -->
 				</div>
 			</div>
 			<div class="form-row align-items-center">
@@ -37,7 +39,7 @@
 				</div>
 				<div class="col-auto my-1">
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" id="visible" name="visible" checked>
+						<input v-model="visible" class="form-check-input" type="checkbox" id="visible" name="visible" checked>
 						<label class="form-check-label" for="visible">
 							Visible within Directory
 						</label>
@@ -49,21 +51,68 @@
 </template>
 
 <script>
+	import DatePicker from 'vuejs-datepicker';
+
 	export default {
 		name: 'securitySettings',
+		components: {DatePicker},
+		props: ['update'],
 		data() {
 			return {
-				disablePreviousVersion: false
+				disablePreviousVersion: false,
+				dateStart: null,
+				dateEnd: null,
+				visible: true,
+				clientId: null
 			}
 		},
 		computed: {
 			clients() {
 				return this.$store.state.clients;
+			},
+			formData() {
+				let formData = {
+					disablePreviousVersion: this.disablePreviousVersion,
+					dateStart: this.dateStart,
+					dateEnd: this.dateEnd,
+					visible: this.visible,
+					clientId: this.clientId
+				}
+				return formData;
+			}
+		},
+		methods: {
+			updateStart(date) {
+				console.log('new start date: ', date);
+			}
+		},
+		watch: {
+			dateStart() {
+				this.update(this.formData);
+			},
+			dateEnd() {
+				this.update(this.formData);
+			},
+			visible() {
+				this.update(this.formData);
+			},
+			disablePreviousVersion() {
+				this.update(this.formData);
+			},
+			clientId() {
+				this.update(this.formData);
 			}
 		}
 	}
 </script>
 
-<style scoped>
+<style>
+	.datePicker {
+		/* width: 300px; */
+	}
 
+	.datePicker input {
+		width: 100%;
+		border: 0;
+	}
 </style>
