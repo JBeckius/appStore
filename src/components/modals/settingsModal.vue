@@ -45,7 +45,7 @@
 											Download Disabled
 										</label>
 									</div>
-									<p>Subdirectory: {{appData.subdirectory.name}}</p>
+									<p>Subdirectory: {{subdirectoryName}}</p>
 								</div>
 								<div class="form-group col-md-6">
 									<div class="form-row">
@@ -86,7 +86,7 @@
 										Download Disabled
 									</label>
 								</div>
-								<p>Subdirectory: {{appData.subdirectory.name}}</p>
+								<p>Subdirectory: {{subdirectoryName}}</p>
 							</div>
 							<div class="form-group col-md-6">
 								<div class="form-row">
@@ -143,6 +143,10 @@
 		computed: {
 			isAdmin() {
 				return this.$store.getters.isAdmin ;
+			},
+			subdirectoryName() {
+				let subdirectory = this.appData.subdirectory;
+				return subdirectory && subdirectory.name ? subdirectory.name : 'none';
 			}
 		}
 	}
