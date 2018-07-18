@@ -6,6 +6,8 @@ import { Apps } from "./apps.js";
 import { Groups } from './groups.js';
 import { Subdirectories } from './subdirectories.js';
 import { User } from './user.js';
+import { Image } from './image.js';
+import { Executables } from './executables.js';
 
 class apiManager {
 
@@ -28,6 +30,8 @@ class apiManager {
 		this.groups = new Groups(this.baseURLPath);
 		this.subdirectories = new Subdirectories(this.baseURLPath);
 		this.user = new User(this.baseURLPath);
+		this.image = new Image(this.baseURLPath);
+		this.executables = new Executables(this.baseURLPath);
 	}
 
 	setAccessDefault(userId) {
@@ -41,6 +45,8 @@ class apiManager {
 		this.groups.setAuthorizationHeader(token);
 		this.subdirectories.setAuthorizationHeader(token);
 		this.user.setAuthorizationHeader(token);
+		this.image.setAuthorizationHeader(token);
+		this.executables.setAuthorizationHeader(token);
 	}
 
 	setAccessNational(nationalId) {

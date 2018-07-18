@@ -1,14 +1,10 @@
-import { baseAPI } from "./baseAPI.js";
+import { baseCRUDAPI } from "./baseCRUDAPI.js";
 
-export class Groups extends baseAPI {
+export class Groups extends baseCRUDAPI {
 
 	constructor(baseURLPath) {
 		super(baseURLPath);
 		this.apiBaseName = 'group';
-	}
-
-	getGroupById(groupId) {
-		return this.axiosObject.get(this.apiBaseName + groupId)
 	}
 
 }
