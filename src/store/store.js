@@ -236,8 +236,27 @@ export default new Vuex.Store({
 				"groupIds": []
 			}
 		],
-		subdirectories: [],
+		subdirectories: [
+			{
+				id: 1,
+				name: 'sub1'
+			},
+			{
+				id: 2,
+				name: 'sub2'
+			}
+		],
 		groups: [],
+		clients: [
+			{
+				clientName: 'Bob',
+				id: '123'
+			},
+			{
+				clientName: 'Joe',
+				id: '456'
+			}
+		],
 		accessToken: null
   },
 	getters: {
@@ -251,6 +270,9 @@ export default new Vuex.Store({
 		},
 		updateGroups(state, groups) {
 			state.groups = groups;
+		},
+		addGroup(state, group) {
+			state.groups = [...state.groups, group]
 		},
 		updateSubdirectories(state, subdirectories) {
 			state.subdirectories = subdirectories;
@@ -272,11 +294,13 @@ export default new Vuex.Store({
 					return dispatch('getUserRole')
 				})
 				.then(resp => {
+					//apiManager.user.getUsername(resp=>console.log('username: ', resp));
 					console.log('authenticated: ', resp);
+					dispatch('updateGroups');
 				})
 				.catch('failed to auth');
 		},
-		getUserRole() {
+		getUserRole({ commit }) {
 			apiManager.user.getUserRole()
 				.then(resp => {
 					//TODO set user role properly
@@ -289,18 +313,33 @@ export default new Vuex.Store({
 		updateApps({ commit }) {
 			return apiManager.apps.getAll()
 				.then(resp => {
+					commit('updateApps', resp.data);
 					console.log('gotApps: ', resp);
 				})
 				.catch(err => console.log('got no apps: ', err))
 		},
-		addGroup({ commit }, group) {
-
-		},
 		updateGroups({ commit }) {
-
+			apiManager.groups.getAll()
+				.then(resp => {
+					let groups = resp.data;
+					commit('updateGroups', groups);
+					console.log('got groups: ', groups);
+				})
+				.catch(err=> console.log('did not get groups: ', err));
+		},
+		addGroup({ commit }, group) {
+			apiManager.groups.post(group)
+				.then(resp => {
+					let respGroup = resp.data;
+					commit('addGroup', respGroup);
+				})
 		},
 		updateSubdirectories({ commit }) {
-
+			apiManager.subdirectories.getAll()
+				.then(resp => {
+					let subdirectories = resp.data;
+					commit('updateSubdirectories', subdirectories);
+				})
 		},
 		getAccessToken({ commit, dispatch }, creds) {
 			return apiManager.Token.getToken(creds)
