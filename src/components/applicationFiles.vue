@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<div class="form-group col-md-6">
-					<input v-model="bundleId" type="text" class="form-control" id="bundleId" name="bundleId"
+					<input v-model="bundleid" type="text" class="form-control" id="bundleId" name="bundleId"
 								 placeholder="Bundle Name">
 				</div>
 				<div class="form-group col-md-6">
@@ -53,12 +53,18 @@
 <script>
 	export default {
 		name: 'applicationFiles',
+		// props: ['bundleId'],
 		data() {
 			return {
 				appIcon: null,
-				bundleId: null,
+				bundleid: null,
 				ipaFileName: null,
 				apkFileName: null
+			}
+		},
+		computed: {
+			bundleId() {
+				this.$emit('update:bundleId', this.bundleid);
 			}
 		}
 	}
