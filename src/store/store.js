@@ -301,11 +301,11 @@ export default new Vuex.Store({
 				.then(() =>{
 					return dispatch('getUserRole')
 				})
-				.then(resp => {
-					//apiManager.user.getUsername(resp=>console.log('username: ', resp));
-					console.log('authenticated');
-					return dispatch('updateAllAppData');
-				})
+				// .then(resp => {
+				// 	//apiManager.user.getUsername(resp=>console.log('username: ', resp));
+				// 	console.log('authenticated');
+				// 	return dispatch('updateAllAppData');
+				// })
 				.catch('failed to auth');
 		},
 		getToken({ commit }) {
