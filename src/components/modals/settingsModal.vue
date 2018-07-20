@@ -19,7 +19,7 @@
 								</button>
 							</p>
 							<p class="mb-0">Last Updated: {{lastUpdatedDate}}</p>
-							<p class="mb-0">File Size: {{fileSize}} MB</p>
+							<p class="mb-0">File Size: {{fileSize / 1000}} MB</p>
 						</div>
 						<div class="col-md-8">
 							<p class="mb-0">{{appData.description}}</p>
@@ -32,17 +32,17 @@
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="visible" id="visible"
-										       :checked="appData.visible">
+										<input v-model="visible" class="form-check-input" type="checkbox" name="visible" id="visible"
+										       :checked="visible">
 										<label class="form-check-label" for="visibleInDirectory">
 											Visible in Directory
 										</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="downloadEnabled" id="downloadEnabled"
-										       :checked="!appData.downloadEnabled">
+										<input v-model="downloadEnabled" class="form-check-input" type="checkbox" name="downloadEnabled" id="downloadEnabled"
+										       :checked="downloadEnabled ? false : true">
 										<label class="form-check-label" for="downloadEnabled">
-											Download Disabled
+											Download Enabled
 										</label>
 									</div>
 									<p>Subdirectory: {{subdirectoryName}}</p>
@@ -51,13 +51,16 @@
 									<div class="form-row">
 										<div class="col-md-6 my-1">
 											<label class="sr-only" for="settingsModalStartDate">Start Date</label>
-											<input type="text" class="form-control" name="dateStart2" id="dateStart2"
-											       placeholder="Start Date" :value="appData.dateStart">
+											<!-- <input type="text" class="form-control" name="dateStart2" id="dateStart2"
+											       placeholder="Start Date" :value="appData.dateStart"> -->
+											<DatePicker class="datePickerSettings form-control" v-model="dateStart" placeholder="Start Date" typeable />
+
 										</div>
 										<div class="col-md-6 my-1">
 											<label class="sr-only" for="settingsModalEndDate">End Date</label>
-											<input type="text" class="form-control" name="dateEnd2" id="dateEnd2"
-											       placeholder="End Date" :value="appData.dateEnd">
+											<!-- <input type="text" class="form-control" name="dateEnd2" id="dateEnd2"
+											       placeholder="End Date" :value="appData.dateEnd"> -->
+											<DatePicker class="datePickerSettings form-control" v-model="dateEnd" placeholder="End Date" typeable />
 											<small id="endDateHelp" class="form-text text-muted">If blank, never expires</small>
 										</div>
 									</div>
@@ -117,11 +120,14 @@
 
 <script>
 	import moment from 'moment';
+	import apiManager from '../../api/apiManager.js';
 	import modalMixin from './appModalMixin.js';
+	import DatePicker from 'vuejs-datepicker';
 
 	export default {
 		name: 'settingsModal',
 		mixins: [modalMixin],
+		components: {DatePicker},
 		// props: ['appData', 'close'],
 		props: {
 			appData: {
@@ -138,7 +144,12 @@
 			}
 		},
 		data() {
-			return {}
+			return {
+				dateStart: this.appData.dateStart,
+				dateEnd: this.appData.dateEnd,
+				visible: this.appData.visible,
+				downloadEnabled: this.appData.downloadEnabled
+			}
 		},
 		computed: {
 			isAdmin() {
@@ -148,11 +159,17 @@
 				let subdirectory = this.appData.subdirectory;
 				return subdirectory && subdirectory.name ? subdirectory.name : 'none';
 			}
+		},
+		methods: {
+			update() {
+
+				apiManager.apps.update()
+			}
 		}
 	}
 </script>
 
-<style scoped>
+<style>
 	.settingsModal {
 		/* width: 80%;
 		margin: 10% 10%;
@@ -168,6 +185,15 @@
 		height: 100%;
 
 
+	}
+
+	.datePickerSettings {
+		width: 100%;
+		padding: 0;
+	}
+
+	.datePickerSettings div input {
+		width: 100%;
 	}
 
 </style>
