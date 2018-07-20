@@ -19,7 +19,7 @@
 			logout(){
 				localStorage.removeItem('access_token');
 				localStorage.removeItem('expires_in');
-				this.$router.push('login');
+				location.reload();
 			}
 		},
 		computed: {
