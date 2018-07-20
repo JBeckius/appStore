@@ -8,6 +8,7 @@ import { Subdirectories } from './subdirectories.js';
 import { User } from './user.js';
 import { Image } from './image.js';
 import { Executables } from './executables.js';
+import { Clients } from './clients.js';
 
 class apiManager {
 
@@ -32,6 +33,7 @@ class apiManager {
 		this.user = new User(this.baseURLPath);
 		this.image = new Image(this.baseURLPath);
 		this.executables = new Executables(this.baseURLPath);
+		this.clients = new Clients(this.baseURLPath);
 	}
 
 	setAccessDefault(userId) {
@@ -47,6 +49,7 @@ class apiManager {
 		this.user.setAuthorizationHeader(token);
 		this.image.setAuthorizationHeader(token);
 		this.executables.setAuthorizationHeader(token);
+		this.clients.setAuthorizationHeader(token);
 	}
 
 	setAccessNational(nationalId) {
