@@ -62,7 +62,7 @@ export default {
 			let searchText = this.searchText.toLowerCase();
 			return this.apps.filter(app => {
 				return app.applicationName.toLowerCase().includes(searchText) ? true :
-							 // app.description.includes(searchText) 		? true :
+							 app.subdirectory && app.subdirectory.name.toLowerCase().includes(searchText) ? true :
 							 																					 false;
 			});
 		}
