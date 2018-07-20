@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import apiManager from '../api/apiManager.js';
+import Router from '../router.js';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
 		user: {
-			role: 'admin'
+			role: null
 		},
 		apps: [
 			{
@@ -261,7 +262,11 @@ export default new Vuex.Store({
   },
 	getters: {
 		isAdmin(state) {
-			return state.user.role === 'admin' ? true : false;
+			return state.user.role === 'Admin' ? true : false;
+		},
+		accessToken(state) {
+			let localToken = localStorage.getItem('access_token');
+			return localToken ? localToken : state.accessToken;
 		}
 	},
   mutations: {
@@ -273,6 +278,9 @@ export default new Vuex.Store({
 		},
 		addGroup(state, group) {
 			state.groups = [...state.groups, group]
+		},
+		updateClients(state, clients) {
+			state.clients = clients;
 		},
 		updateSubdirectories(state, subdirectories) {
 			state.subdirectories = subdirectories;
@@ -295,17 +303,20 @@ export default new Vuex.Store({
 				})
 				.then(resp => {
 					//apiManager.user.getUsername(resp=>console.log('username: ', resp));
-					console.log('authenticated: ', resp);
-					dispatch('updateGroups');
+					console.log('authenticated');
+					return dispatch('updateAllAppData');
 				})
 				.catch('failed to auth');
 		},
+		getToken({ commit }) {
+
+		},
 		getUserRole({ commit }) {
-			apiManager.user.getUserRole()
+			return apiManager.user.getUserRole()
 				.then(resp => {
 					//TODO set user role properly
 					console.log('getUserRole: ', resp.data);
-					// return commit('setUserRole', res)
+					return commit('setUserRole', resp.data)
 				})
 				.catch(err => console.log('user role fail: ', err));
 		},
@@ -319,7 +330,7 @@ export default new Vuex.Store({
 				.catch(err => console.log('got no apps: ', err))
 		},
 		updateGroups({ commit }) {
-			apiManager.groups.getAll()
+			return apiManager.groups.getAll()
 				.then(resp => {
 					let groups = resp.data;
 					commit('updateGroups', groups);
@@ -327,29 +338,58 @@ export default new Vuex.Store({
 				})
 				.catch(err=> console.log('did not get groups: ', err));
 		},
+		updateClients({ commit }) {
+			return apiManager.clients.getAll()
+				.then(resp => {
+					let clients = resp.data;
+					commit('updateClients', clients);
+				})
+				.catch(err=> console.log('did not get clients: ', err));
+		},
 		addGroup({ commit }, group) {
-			apiManager.groups.post(group)
+			return apiManager.groups.post(group)
 				.then(resp => {
 					let respGroup = resp.data;
 					commit('addGroup', respGroup);
 				})
 		},
 		updateSubdirectories({ commit }) {
-			apiManager.subdirectories.getAll()
+			return apiManager.subdirectories.getAll()
 				.then(resp => {
 					let subdirectories = resp.data;
 					commit('updateSubdirectories', subdirectories);
 				})
+				.catch(err => console.log('did not get subdirectories: ', err))
 		},
 		getAccessToken({ commit, dispatch }, creds) {
+			// check for local token
+			let localToken = localStorage.getItem('access_token');
+			if(localToken) return commit('setAccessToken', localToken);
+			// if no local token, request new token
 			return apiManager.Token.getToken(creds)
 			.then(resp => {
 				let token = resp.data.access_token;
 				localStorage.setItem('access_token', token);
-				commit( 'setAccessToken', token );
-				return dispatch('updateApps');
+
+				return commit( 'setAccessToken', token );
 			})
 
+		},
+		updateAllAppData({ commit, dispatch }) {
+			let updates = ['updateApps', 'updateGroups', 'updateSubdirectories'];
+			// let promises = updates.map(update => dispatch(update));
+			dispatch('updateApps')
+				.then(()=> dispatch('updateGroups'))
+				.then(()=>dispatch('updateSubdirectories'))
+				.then(()=>dispatch('updateClients'))
+				.then(resps => console.log('updates done: ', resps))
+				.catch(err=> {
+
+				});
+			// console.log('promises: ', promises);
+			// return Promise.all(promises)
+			// 	.then(resps => console.log('updates done: ', resps))
+			// 	.catch(err => console.log('not all updates succeeded: ', err));
 		}
   }
 })
