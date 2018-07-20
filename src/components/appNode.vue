@@ -9,12 +9,12 @@
 				<div class="card-body col-sm-8">
 					<h5 class="card-title">{{appData.applicationName}}</h5>
 					<!-- <p class="card-text">Version {{latestVersion version}}</p> -->
-					<p class="card-text">Version 1.x</p>
+					<p class="card-text">{{currentVersion.version}}</p>
 					<button class="btn btn-primary settingsBtn" :data-id="appData.applicationId" v-on:click="select()">
 						Settings
 					</button>
 					<a v-if="iOS" :href="href" class="btn btn-secondary">Download</a>
-					<a v-if="!iOS" :href="href" class="btn btn-secondary downloadBtn" :data-url="appData.applicationId">Download</a>
+					<a v-if="!iOS" :href="href" class="btn btn-secondary downloadBtn">Download</a>
 				</div>
 			</div>
 		</div>
@@ -44,9 +44,12 @@ export default {
 	},
 	computed: {
 		href(){
-			return this.iOS ? `itms-services://?action=download-manifest&url=${this.appData.versions[1].path}`
-										  : "#";
-		} ,
+			return this.iOS ? `itms-services://?action=download-manifest&url=${this.currentVersion.path}`
+										  : this.currentVersion.path;
+		},
+		currentVersion() {
+			return this.appData.versions.find(version => version.downloadEnabled === 1) || this.appData.versions[0];
+		}
 		// iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
 	}
 }
