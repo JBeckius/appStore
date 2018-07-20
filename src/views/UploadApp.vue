@@ -100,10 +100,10 @@
 					<div class="form-row">
 						<Dropdown v-model="clientId" :options="clients" optionValue="id" optionDisplay="clientName" placeholder="Select a Client" name="clients"/>
 						<div class="form-group col-md-4 my-1">
-							<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date"/>
+							<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date" typeable/>
 						</div>
 						<div class="form-group col-md-4 my-1">
-							<DatePicker class="datePicker form-control" v-model="dateEnd" placeholder="End Date"/>
+							<DatePicker class="datePicker form-control" v-model="dateEnd" placeholder="End Date" typeable/>
 						</div>
 					</div>
 					<div class="form-row align-items-center">
