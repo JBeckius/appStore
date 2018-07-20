@@ -80,8 +80,12 @@ router.beforeEach((to, from, next) => {
                 params: { nextUrl: to.fullPath }
             })
         } else if(Store.state.user.role == null) {
-					console.log('hit me');
-					Store.dispatch('authenticate')
+					console.log('hit me there');
+					return Store.dispatch('authenticate')
+						.then(()=>{
+							return Store.dispatch('updateAllAppData')
+
+						})
 						.then(()=>{
 							next()
 						})
@@ -106,7 +110,7 @@ router.beforeEach((to, from, next) => {
             next()
         }
 				else if(Store.state.user.role == null) {
-										console.log('hit me');
+										console.log('hit me here');
 					Store.dispatch('updateAllAppData')
 						.then(()=>{
 							next()
@@ -117,11 +121,13 @@ router.beforeEach((to, from, next) => {
         }
     }else {
 			if(Store.state.user.role == null) {
-									console.log('hit me');
+									console.log('hit me harder');
 				Store.dispatch('authenticate')
 					.then(()=>{
-						next()
+						return Store.dispatch('updateAllAppData')
+
 					})
+					.then(()=> next())
 			}
 			console.log('hitting here');
         next()
