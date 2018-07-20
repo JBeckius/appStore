@@ -233,10 +233,10 @@
 							clientAdIds : this.clients.find(client=> client.id === this.clientId)
 						} : null))
 
-						if(this.applicationId) return apiManager.apps.put(json);
+						if(this.applicationId) return apiManager.apps.update(json);
 						else return apiManager.apps.upload(json);
 					})
-					.then(resp => this.$router.push('/'))
+					.then(resp => this.$router.push('/'));
 
 
 			},
@@ -283,12 +283,12 @@
 				this.dateEnd = app.dateEnd || null;
 				this.visible = app.visible || true;
 				this.downloadEnabled = app.downloadEnabled || true;
-				this.versionIds = app.versionIds || [];
+				this.versionIds = app.versions.map(version=>version.id) || [];
 				this.imageId = app.image.id || null;
 				this.groupIds = app.groupIds || null;
 				this.applicationId = app.applicationId || null;
 				this.clientId = app.clientId || null;
-				this.clientAdIds = app.clientAds || null;
+				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
 
 			}
 		}
