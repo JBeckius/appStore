@@ -32,7 +32,7 @@
 
 <script>
 import apiManager from '../api/apiManager.js';
-import AppNode from '../components/app.vue';
+import AppNode from '../components/appNode.vue';
 import SettingsModal from '../components/modals/settingsModal.vue';
 import VersionHistoryModal from '../components/modals/versionHistoryModal.vue';
 
