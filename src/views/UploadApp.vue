@@ -51,12 +51,7 @@
 							<div class="input-group mb-3">
 								<input v-model="appIcon" type="text" class="form-control" id="appIcon" name="appIcon"
 											 placeholder="Upload Application Icon">
-								<FileUpload :fileType="fileTypes.img"
-														name="appIconFile"
-														:upload="uploadImg"
-								/>
-								<!-- <input v-on:change="" type="file" accept="image/*" class="d-none" id="appIconFile"
-											 name="appIconFile"/> -->
+								<FileUpload :fileType="fileTypes.img" name="appIconFile" :upload="uploadImg()"/>
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary" name="appIconFileBtn"
 													id="appIconFileBtn"
@@ -67,18 +62,14 @@
 						</div>
 						<div class="form-group col-md-6">
 							<input v-model="bundleId" type="text" class="form-control" id="bundleId" name="bundleId"
-										 placeholder="Bundle Name">
+										 placeholder="Bundle Id">
 						</div>
 						<div class="form-group col-md-6">
 							<div class="input-group mb-3">
 								<input v-model="ipaFileName" type="text" class="form-control" id="ipaFileName" name="ipaFileName"
 											 placeholder="Enterprise Distribution File(.IPA)">
 
-								<FileUpload :fileType="fileTypes.ipa"
-														name="ipaFile"
-														:upload="uploadIpa"
-								/>
-								<!-- <input v-on:change="fileChange($event.target.name, $event.target.file)" type="file" class="d-none" id="ipaFile" :disabled="isSaving" name="ipaFile"/> -->
+								<FileUpload :fileType="fileTypes.ipa" name="ipaFile" :upload="loadIpa"/>
 
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary" name="ipaFileBtn" id="ipaFileBtn"
@@ -91,11 +82,8 @@
 							<div class="input-group mb-3">
 								<input v-model="apkFileName" type="text" class="form-control" name="apkFileName" id="apkFileName"
 											 placeholder="Android File(.APk)">
-								<FileUpload :fileType="fileTypes.apk"
-														name="apkFile"
-														:upload="uploadApk"
+								<FileUpload :fileType="fileTypes.apk" name="apkFile" :upload="loadApk"
 								/>
-								<!-- <input v-on:change="" type="file" class="d-none" id="apkFile" name="apkFile"/> -->
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary" name="apkFileBtn" id="apkFileBtn"
 													type="button">Upload
@@ -106,31 +94,50 @@
 					</div>
 				</div>
 			</div>
-			<SecuritySettings :update="updateSecurity"/>
-			<button class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="button">Upload</button>
+			<div class="card">
+				<h5 class="card-header">Security Settings</h5>
+				<div class="card-body">
+					<div class="form-row">
+						<Dropdown v-model="clientId" :options="clients" optionValue="id" optionDisplay="clientName" placeholder="Select a Client" name="clients"/>
+						<div class="form-group col-md-4 my-1">
+							<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date"/>
+						</div>
+						<div class="form-group col-md-4 my-1">
+							<DatePicker class="datePicker form-control" v-model="dateEnd" placeholder="End Date"/>
+						</div>
+					</div>
+					<div class="form-row align-items-center">
+						<Checkbox v-model="disablePreviousVersion" name="disablePreviousVersion" label="Disable Previous Version" />
+						<Checkbox v-model="visible" name="visible" label="Visible Within Directory" :checked="visible"/>
+					</div>
+				</div>
+			</div>
+			<!-- <SecuritySettings :update="updateSecurity"/> -->
+			<button v-on:click="uploadApp" class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="button">Upload</button>
 		</form>
 		<div class="uploadAppMessage"></div>
 	</div>
 </template>
 
 <script>
-	import ApplicationDetails from '../components/applicationDetails.vue'
-	import ApplicationFiles from '../components/applicationFiles.vue'
-	import SecuritySettings from '../components/securitySettings.vue'
+	import moment from 'moment';
 	import FileUpload from '../components/fileUpload.vue';
-	import Datepicker from 'vuejs-datepicker';
+	import DatePicker from 'vuejs-datepicker';
+	import Checkbox from '../components/inputs/checkbox.vue';
+	import Dropdown from '../components/inputs/dropdown.vue';
 	import apiManager from '../api/apiManager.js';
 
 	export default {
 		name: 'uploadApp',
 		components: {
-			ApplicationDetails,
-			ApplicationFiles,
-			SecuritySettings,
-			FileUpload
+			FileUpload,
+			DatePicker,
+			Checkbox,
+			Dropdown
 		},
 		data() {
 			return {
+				disablePreviousVersion: false,
 				subdirectory: null,
 				applicationVersion: null,
 				relatedApp: null,
@@ -139,9 +146,9 @@
 				bundleId: null,
 				dateStart: null,
 				dateEnd: null,
-				visible: null,
+				visible: true,
 				downloadEnabled: null,
-				versionIds: null,
+				versionIds: [],
 				imageId: null,
 				groupIds: null,
 				clientId: null,
@@ -150,7 +157,9 @@
 				clientAdIds: null,
 				appUploaded: null,
 				apkFileName: null,
+				apkFile: null,
 				ipaFileName: null,
+				ipaFile: null,
 				appIcon: null,
 				fileTypes: {
 					img: 'image/*',
@@ -160,42 +169,75 @@
 			}
 		},
 		methods: {
-			uploadIpa(name, file) {
+			loadIpa(name, file) {
 				console.log('uploading ipa: ', name, file);
-				apiManager.executables.upload(file);
+				this.ipaFile = file;
+				//apiManager.executables.upload(file);
 			},
-			uploadApk(name, file) {
+			loadApk(file) {
+				console.log('loading apk: ', file);
+				this.apkFile = file;
+			},
+			uploadExe(opts) {
 				console.log('uploading apk: ', name, file);
-				apiManager.executables.upload(file);
+				apiManager.executables.upload(opts);
 			},
-			uploadImg(name, file) {
-				console.log('uploading img: ', name, file);
-				this.imageID = null;
-				apiManager.image.upload(file)
-				.then(resp => {
-					console.log('uploaded that image: ', resp);
-					this.imageId = resp.data.Id;
-				})
-				.catch(err=> console.log(err));
+			uploadImg() {
+				let _this = this;
+				return (name, file) => {
+					console.log('uploading img: ', name, file);
+					_this.imageId = null;
+					apiManager.image.upload(file)
+					.then(resp => {
+						console.log('uploaded that image: ', resp);
+						_this.imageId = resp.data.id;
+					})
+					.catch(err=> console.log(err));
+				}
 			},
 			uploadApp() {
-				let json = JSON.stringify(Object.assign({
-					applicationName : this.applicationName,
-					description : this.description,
-					bundleId : this.bundleId || this.name,
-					dateStart : this.dateStart ? moment(this.dateStart).toISOString() : "",
-					dateEnd : this.dateEnd ? moment(this.dateEnd).toISOString() : "" ,
-					visible : this.visible ? true : false,
-					downloadEnabled :  true,
-					versionIds : versionIds,
-					imageId : this.imageId,
-					groupIds : [this.subdirectory],
-					clientId : this.clientId
-				}, (this.relatedApp) ? {
-					applicationID : this.applicationId,
-					clientId : $('#curcli').text(),
-					clientAdIds : formData.get('clients')
-				} : null))
+				debugger;
+				let exeFiles = [this.apkFile, this.ipaFile];
+				let loadedExes = exeFiles.filter(file => file ? true : false);
+				let uploadExeProms = loadedExes.map(file => {
+					let opts = {
+						file,
+						name: this.applicationName,
+						applicationVersion: this.applicationVersion,
+						dateStart: this.dateStartISO,
+						dateEnd: this.dateEndISO,
+						bundleId: this.bundleId,
+						downloadEnabled: true
+					};
+					return apiManager.executables.upload(opts);
+				});
+				Promise.all(uploadExeProms)
+					.then(resps => {
+						let versionIds = resps.map(resp => resp.data.id);
+
+						let json = JSON.stringify(Object.assign({
+							applicationName : this.applicationName,
+							description : this.description,
+							bundleId : this.bundleId || this.name,
+							dateStart : this.dateStartISO,
+							dateEnd : this.dateEndISO,
+							visible : this.visible ? true : false,
+							downloadEnabled :  true,
+							versionIds : versionIds,
+							imageId : this.imageId,
+							groupIds : [this.subdirectory],
+							clientId : this.clientId
+						}, (this.relatedApp) ? {
+							applicationID : this.applicationId,
+							clientId :this.clientId,
+							clientAdIds : this.clients.find(client=> client.id === this.clientId)
+						} : null))
+
+						if(this.applicationId) return apiManager.apps.put(json);
+						else return apiManager.apps.upload(json);
+					})
+					.then(resp => this.$router.push('/'))
+
 
 			},
 			updateDetails({ applicationName, applicati}) {
@@ -218,25 +260,35 @@
 			},
 			subdirectories() {
 				return this.$store.state.subdirectories;
+			},
+			clients() {
+				return this.$store.state.clients;
+			},
+			dateStartISO() {
+				return this.dateStart ? moment(this.dateStart).toISOString() : ""
+			},
+			dateEndISO() {
+				return this.dateEnd ? moment(this.dateEnd).toISOString() : ""
 			}
 		},
 		watch: {
 			relatedApp() {
-				this.subdirectory = this.relatedApp.subdirectory;
-				this.applicationVersion = this.relatedApp.versions[0];
-				this.applicationName = this.relatedApp.applicationName;
-				this.description = this.relatedApp.description;
-				this.bundleId = this.relatedApp.bundleId;
-				this.dateStart = this.relatedApp.dateStart;
-				this.dateEnd = this.relatedApp.dateEnd;
-				this.visible = this.relatedApp.visible;
-				this.downloadEnabled = this.relatedApp.downloadEnabled;
-				this.versionIds = this.relatedApp.versionIds;
-				this.imageId = this.relatedApp.image.id;
-				this.groupIds = this.relatedApp.groupIds;
-				this.applicationId = this.relatedApp.applicationId;
-				this.clientId = this.relatedApp.clientId;
-				this.clientAdIds = this.relatedApp.clientAds;
+				let app = this.relatedApp;
+				this.subdirectory = app.subdirectory && app.subdirectory.id ? app.subdirectory.id : null;
+				this.applicationVersion = app.versions[0].version || null;
+				this.applicationName = app.applicationName || null;
+				this.description = app.description || null;
+				this.bundleId = app.bundleId || null;
+				this.dateStart = app.dateStart || null;
+				this.dateEnd = app.dateEnd || null;
+				this.visible = app.visible || true;
+				this.downloadEnabled = app.downloadEnabled || true;
+				this.versionIds = app.versionIds || [];
+				this.imageId = app.image.id || null;
+				this.groupIds = app.groupIds || null;
+				this.applicationId = app.applicationId || null;
+				this.clientId = app.clientId || null;
+				this.clientAdIds = app.clientAds || null;
 
 			}
 		}
