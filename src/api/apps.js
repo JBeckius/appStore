@@ -13,4 +13,18 @@ export class Apps extends baseCRUDAPI {
 			}
 		})
 	}
+	update(app) {
+		return this.axiosObject.put(this.apiBaseName, app, {
+			headers: {
+				'Content-type': 'application/json'
+			}
+		});
+	}
+	addADGroup(appId, adName) {
+		let data = {
+			applicationId: appId,
+			adName
+		};
+		return this.axiosObject.post(this.apiBaseName + '/AD', data);
+	}
 }
