@@ -7,6 +7,7 @@ import UploadApp from './views/UploadApp.vue'
 import DownloadReport from './views/DownloadReport.vue'
 import ConfigMapping from './views/ConfigMapping.vue'
 import Login from './views/Login.vue'
+import Store from './store/store.js'
 
 Vue.use(Router)
 
@@ -67,13 +68,24 @@ let router =  new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth) && process.env.VUE_APP_DEBUG === false) {
+		console.log(Store.state.user.role);
+    if(to.matched.some(record => record.meta.requiresAuth)
+			// && process.env.VUE_APP_DEBUG === false
+		) {
         if (localStorage.getItem('access_token') == null) {
+
+
             next({
                 path: '/login',
                 params: { nextUrl: to.fullPath }
             })
-        } else {
+        } else if(Store.state.user.role == null) {
+					console.log('hit me');
+					Store.dispatch('authenticate')
+						.then(()=>{
+							next()
+						})
+				} else {
             let user = JSON.parse(localStorage.getItem('user'))
             if(to.matched.some(record => record.meta.is_admin)) {
                 if(user.is_admin == 1){
@@ -83,17 +95,35 @@ router.beforeEach((to, from, next) => {
                     next({ name: 'userboard'})
                 }
             }else {
-                next()
+							Store.dispatch('updateAllAppData')
+								.then(()=> {
+									next()
+								})
             }
         }
     } else if(to.matched.some(record => record.meta.guest)) {
         if(localStorage.getItem('access_token') == null){
             next()
         }
+				else if(Store.state.user.role == null) {
+										console.log('hit me');
+					Store.dispatch('updateAllAppData')
+						.then(()=>{
+							next()
+						})
+				}
         else{
             next({ name: 'userboard'})
         }
     }else {
+			if(Store.state.user.role == null) {
+									console.log('hit me');
+				Store.dispatch('authenticate')
+					.then(()=>{
+						next()
+					})
+			}
+			console.log('hitting here');
         next()
     }
 })
