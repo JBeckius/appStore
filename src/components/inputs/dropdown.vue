@@ -7,7 +7,7 @@
 						:name="name"
 						required
 		>
-			<option :value="{}" class="dropDownPlaceHolder">{{placeholder}}</option>
+			<option :value="null" class="dropDownPlaceHolder">{{placeholder}}</option>
 			<option v-if="options" v-for="(option, index) in options" :value="option[optionValue]" :key="index">{{option[optionDisplay]}}</option>
 		</select>
 		<div class="d-none" id="curcli"></div>
