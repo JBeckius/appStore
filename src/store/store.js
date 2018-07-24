@@ -318,7 +318,11 @@ export default new Vuex.Store({
 					console.log('getUserRole: ', resp.data);
 					return commit('setUserRole', resp.data)
 				})
-				.catch(err => console.log('user role fail: ', err));
+				.catch(err => {
+					console.log('user role fail: ', err);
+					localStorage.removeItem('access_token');
+					location.reload();
+				});
 		},
 
 		updateApps({ commit }) {
