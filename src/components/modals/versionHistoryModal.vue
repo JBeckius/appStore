@@ -28,18 +28,21 @@
 								</tr>
 								</thead>
 								<tbody>
-									<Version v-for="version in appData.versions" :version="version" />
+									<Version v-for="(version, index) in appData.versions"
+													 :version="version"
+													 v-if="Math.ceil((index + 1)/versionsPerPage) === currentPage"
+									/>
 								</tbody>
 							</table>
 						</div>
 						<div class="form-row">
 							<nav aria-label="Page navigation example" class="w-100">
 								<ul class="pagination justify-content-center">
-									<li class="page-item disabled">
-										<a class="page-link" href="#" tabindex="-1">Previous</a>
+									<li class="page-item" :class="{disabled: currentPage === 1}">
+										<a class="page-link" v-on:click="prevPage" href="#" tabindex="-1">Newer</a>
 									</li>
-									<li class="page-item">
-										<a class="page-link" href="#">Next</a>
+									<li class="page-item" :class="{disabled: currentPage === totalPages}">
+										<a class="page-link" v-on:click="nextPage" href="#">Older</a>
 									</li>
 								</ul>
 							</nav>
@@ -67,12 +70,27 @@
 		props: ['appData', 'close'],
 		mixins: [modalMixin],
 		components: {Version},
-		methods: {
-			formatDate(rawDate) {
-				return moment(rawDate).format("MM/DD/YYYY");
+		data() {
+			return {
+				versionsPerPage: 5,
+				currentPage: 1
 			}
 		},
 		methods: {
+			formatDate(rawDate) {
+				return moment(rawDate).format("MM/DD/YYYY");
+			},
+			nextPage() {
+				if(this.currentPage < this.totalPages) this.currentPage += 1;
+			},
+			prevPage() {
+				if(this.currentPage > 1) this.currentPage -= 1;
+			}
+		},
+		computed: {
+			totalPages() {
+				return Math.ceil(this.appData.versions.length / this.versionsPerPage);
+			}
 		}
 	}
 </script>
