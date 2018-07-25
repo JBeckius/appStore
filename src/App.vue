@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div v-if="currentRoute !== 'login'"id="nav">
       <router-link to="/home">Home</router-link> |
       <router-link to="/about">About</router-link> |
 			<router-link to="/">Directory</router-link> |
@@ -25,6 +25,9 @@
 		computed: {
 			isAdmin() {
 				return this.$store.getters.isAdmin;
+			},
+			currentRoute() {
+				return this.$route.name;
 			}
 		}
 	}
