@@ -4,11 +4,11 @@
 			<p class="mb-0">You may modify the AD group for a specific client, or add clients to the
 				system</p>
 		</div>
-		<form id="configMappingClientsForm">
+		<form id="configMappingClientsForm" @submit="modifyClient">
 			<h3>1. Choose an client</h3>
 			<div class="form-group">
 				<select type="text" v-model="selectedClient" class="form-control" id="configClient" name="configClient" required>
-					<option value="">Clients</option>
+					<option :value="null">Clients</option>
 					<option v-for="client in clients" :value="client">{{client.clientName}}</option>
 					<option :value="'new'">Add New</option>
 				</select>
@@ -25,7 +25,7 @@
 					Please enter a Group Name.
 				</div>
 			</div>
-			<button v-on:click="modifyClient" class="btn btn-primary btn-center mt-3" type="button">Submit</button>
+			<button class="btn btn-primary btn-center mt-3" type="submit">Submit</button>
 		</form>
 		<div class="configMappingClientMessage">
 			<div v-if="status === 'uploading'" class="uploading">Uploading</div>
@@ -59,7 +59,8 @@
 			}
 		},
 		methods: {
-			createClient() {
+			createClient(e) {
+				e.preventDefault()
 				console.log('creating client: ', this.clientName, this.selectedAD);
 				this.status = 'uploading';
 				apiManager.groups.addAD({clientName: this.clientName, adName: this.selectedAD})
@@ -76,7 +77,8 @@
 						}, 2000);
 					});
 			},
-			updateClient() {
+			updateClient(e) {
+				e.preventDefault()
 				console.log('updating client: ', this.selectedClient.clientName, this.selectedAD);
 				this.status = 'uploading';
 				apiManager.groups.addAD({adName: this.selectedAD, id: this.selectedClient.id})
