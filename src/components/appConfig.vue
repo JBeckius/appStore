@@ -4,7 +4,7 @@
 			<p class="mb-0">You may add an additional AD group for an application here. Applications
 				inherit an AD group based on their client</p>
 		</div>
-		<form id="configMappingApplicationForm">
+		<form id="configMappingApplicationForm" @submit="updateApp">
 			<h3>1. Choose an application</h3>
 			<div class="form-group">
 				<select v-model="selectedAppId" class="form-control" id="configApplication" name="configApplication">
@@ -19,7 +19,7 @@
 					Please enter a Group Name.
 				</div>
 			</div>
-			<button v-on:click="updateApp" class="btn btn-primary btn-center mt-3" type="button">Submit</button>
+			<button class="btn btn-primary btn-center mt-3" type="submit">Submit</button>
 		</form>
 		<div class="configMappingApplicationMessage"></div>
 	</div>
@@ -27,7 +27,7 @@
 
 <script>
 	import apiManager from '../api/apiManager.js';
-	
+
 	export default {
 		name: "appConfig",
 		data() {
@@ -42,7 +42,8 @@
 			}
 		},
 		methods: {
-			updateApp() {
+			updateApp(e) {
+				e.preventDefault();
 				if(this.appInput) {
 					return apiManager.apps.addADGroup(this.selectedAppId, this.appInput)
 						.then(()=> this.$store.dispatch('updateApps'))
