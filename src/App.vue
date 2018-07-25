@@ -31,6 +31,12 @@
 </script>
 
 <style>
+body {
+	width: 100%;
+}
+.row {
+	margin: 0 !important;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
