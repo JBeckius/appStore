@@ -1,6 +1,6 @@
 <template>
 	<div class="tab-pane" id="uploadAppTab">
-		<form enctype="multipart/form-data" id="uploadAppForm" method="post" novalidate>
+		<form enctype="multipart/form-data" @submit="checkForm" id="uploadAppForm" method="post">
 			<div class="card">
 				<h5 class="card-header">Application Details</h5>
 				<div class="card-body">
@@ -28,8 +28,8 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-4">
-							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory">
-								<option value="" selected="selected">Subdirectory</option>
+							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory" required>
+								<option :value="null" selected="selected">Subdirectory</option>
 								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory.id">{{subdirectory.name}}</option>
 							</select>
 						</div>
@@ -49,8 +49,8 @@
 					<div class="form-row">
 						<div class="form-group col-md-6">
 							<div class="input-group mb-3">
-								<input v-model="appIcon" type="text" class="form-control" id="appIcon" name="appIcon"
-											 placeholder="Upload Application Icon">
+								<!-- <input v-model="appIcon" type="text" class="form-control" id="appIcon" name="appIcon"
+											 placeholder="Upload Application Icon"> -->
 								<FileUpload :fileType="fileTypes.img" name="appIconFile" :upload="uploadImg()"/>
 								<div class="input-group-append">
 									<button class="btn btn-outline-secondary" name="appIconFileBtn"
@@ -62,12 +62,12 @@
 						</div>
 						<div class="form-group col-md-6">
 							<input v-model="bundleId" type="text" class="form-control" id="bundleId" name="bundleId"
-										 placeholder="Bundle Id">
+										 placeholder="Bundle Id" required>
 						</div>
 						<div class="form-group col-md-6">
 							<div class="input-group mb-3">
-								<input v-model="ipaFileName" type="text" class="form-control" id="ipaFileName" name="ipaFileName"
-											 placeholder="Enterprise Distribution File(.IPA)">
+								<!-- <input v-model="ipaFileName" type="text" class="form-control" id="ipaFileName" name="ipaFileName"
+											 placeholder="Enterprise Distribution File(.IPA)"> -->
 
 								<FileUpload :fileType="fileTypes.ipa" name="ipaFile" :upload="loadIpa"/>
 
@@ -80,8 +80,8 @@
 						</div>
 						<div class="form-group col-md-6">
 							<div class="input-group mb-3">
-								<input v-model="apkFileName" type="text" class="form-control" name="apkFileName" id="apkFileName"
-											 placeholder="Android File(.APk)">
+								<!-- <input v-model="apkFileName" type="text" class="form-control" name="apkFileName" id="apkFileName"
+											 placeholder="Android File(.APk)"> -->
 								<FileUpload :fileType="fileTypes.apk" name="apkFile" :upload="loadApk"
 								/>
 								<div class="input-group-append">
@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<!-- <SecuritySettings :update="updateSecurity"/> -->
-			<button v-on:click="uploadApp" class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="button">Upload</button>
+			<button v-on:click="" class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="submit">Upload</button>
 		</form>
 		<div class="uploadAppMessage"></div>
 	</div>
@@ -196,7 +196,6 @@
 				}
 			},
 			uploadApp() {
-				debugger;
 				let exeFiles = [this.apkFile, this.ipaFile];
 				let loadedExes = exeFiles.filter(file => file ? true : false);
 				let uploadExeProms = loadedExes.map(file => {
@@ -215,7 +214,7 @@
 					.then(resps => {
 						let versionIds = resps.map(resp => resp.data.id);
 
-						let json = JSON.stringify(Object.assign({
+						let opts = Object.assign({
 							applicationName : this.applicationName,
 							description : this.description,
 							bundleId : this.bundleId || this.name,
@@ -223,18 +222,18 @@
 							dateEnd : this.dateEndISO,
 							visible : this.visible ? true : false,
 							downloadEnabled :  true,
-							versionIds : versionIds,
-							imageId : this.imageId,
+							imageId : null,
 							groupIds : [this.subdirectory],
 							clientId : this.clientId
 						}, (this.relatedApp) ? {
-							applicationID : this.applicationId,
+							applicationId : this.applicationId,
 							clientId :this.clientId,
 							clientAdIds : this.clients.find(client=> client.id === this.clientId)
-						} : null))
+						} : null)
+						if(versionIds.length > 0) opts.versionIds = versionIds;
 
-						if(this.applicationId) return apiManager.apps.update(json);
-						else return apiManager.apps.upload(json);
+						if(this.applicationId) return apiManager.apps.update(this.relatedApp, opts);
+						else return apiManager.apps.upload(opts);
 					})
 					.then(resp => this.$router.push('/'));
 
@@ -252,6 +251,22 @@
 				this.dateEnd = securityForm.dateEnd;
 				this.visible = securityForm.visible;
 				this.clientId = securityForm.clientId;
+			},
+			checkForm(e) {
+				e.preventDefault();
+				if(
+					this.applicationName &&
+					this.description &&
+					this.bundleId &&
+					this.dateStart &&
+					this.dateEnd &&
+					this.visible &&
+					this.subdirectory &&
+					this.clientId &&
+					(this.ipaFile || this.apkFile)
+				) console.log('app validated'); return this.uploadApp();
+
+
 			}
 		},
 		computed: {
@@ -287,7 +302,7 @@
 				this.imageId = app.image.id || null;
 				this.groupIds = app.groupIds || null;
 				this.applicationId = app.applicationId || null;
-				this.clientId = app.clientId || null;
+				this.clientId = app.clientADs.id || null;
 				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
 
 			}
