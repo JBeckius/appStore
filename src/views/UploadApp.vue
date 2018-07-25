@@ -53,10 +53,10 @@
 											 placeholder="Upload Application Icon"> -->
 								<FileUpload :fileType="fileTypes.img" name="appIconFile" :upload="uploadImg()"/>
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" name="appIconFileBtn"
+									<!-- <button class="btn btn-outline-secondary" name="appIconFileBtn"
 													id="appIconFileBtn"
 													type="button">Upload
-									</button>
+									</button> -->
 								</div>
 							</div>
 						</div>
@@ -72,9 +72,9 @@
 								<FileUpload :fileType="fileTypes.ipa" name="ipaFile" :upload="loadIpa"/>
 
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" name="ipaFileBtn" id="ipaFileBtn"
+									<!-- <button class="btn btn-outline-secondary" name="ipaFileBtn" id="ipaFileBtn"
 													type="button">Upload
-									</button>
+									</button> -->
 								</div>
 							</div>
 						</div>
@@ -85,9 +85,9 @@
 								<FileUpload :fileType="fileTypes.apk" name="apkFile" :upload="loadApk"
 								/>
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" name="apkFileBtn" id="apkFileBtn"
+									<!-- <button class="btn btn-outline-secondary" name="apkFileBtn" id="apkFileBtn"
 													type="button">Upload
-									</button>
+									</button> -->
 								</div>
 							</div>
 						</div>
