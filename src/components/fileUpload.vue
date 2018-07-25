@@ -1,15 +1,17 @@
 <template>
-	<form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-		<div class="dropbox">
-			<input type="file"
+	<form enctype="multipart/form-data" novalidate >
+		<div class="dropbox" :class="{success: isSuccess, failed: isFailed}">
+			<input v-if="isInitial || isSaving" type="file"
 						:name="name"
 						:disabled="isSaving"
-						@change="upload($event.target.name, $event.target.files[0])"
+						@change="save($event.target.name, $event.target.files[0])"
 						:accept="fileType"
 						class="input-file"
 			/>
-	    <p v-if="isInitial">Drag your file(s) here to begin<br /> or click to browse</p>
+	    <p v-if="isInitial">Drag your {{name}} here to begin<br /> or click to browse</p>
 	    <p v-if="isSaving">Uploading file</p>
+			<p v-if="isSuccess">{{ name }} upload successful</p>
+			<p v-if="isFailed">{{ name }} upload unsuccessful</p>
 	  </div>
 	</form>
 </template>
@@ -51,11 +53,11 @@
 				this.uploadedFile = null;
 				this.uploadError = null;
 			},
-			save(formData) {
+			save(name, file) {
 				// upload data to the server
 				this.currentStatus = STATUS_SAVING;
 
-				upload(formData)
+				this.upload(name, file)
 					.then(x => {
 						this.uploadedFile = x;
 						this.currentStatus = STATUS_SUCCESS;
@@ -89,22 +91,38 @@
 </script>
 
 <style scoped>
+	form {
+		width: 100%;
+	}
   .dropbox {
-    outline: 2px dashed grey; /* the dash box */
-    outline-offset: -10px;
-    background: lightcyan;
+		width: 100%;
+		height: 90px;
+    border: 1px solid grey; /* the dash box */
+    /* outline-offset: -10px; */
+    /* background: lightcyan; */
     color: dimgray;
     padding: 10px 10px;
-    min-height: 200px; /* minimum height */
+    /* min-height: 200px; /* minimum height */ */
     position: relative;
     cursor: pointer;
+		border-radius: 0.25rem;
   }
+
+	.success {
+		background-color: #32d186;
+	}
+
+	.failed {
+		background-color: #f7604c;
+	}
 
   .input-file {
     opacity: 0; /* invisible but it's there! */
     width: 100%;
-    height: 200px;
+    height: 100%;
     position: absolute;
+		left: 0;
+		top: 0;
     cursor: pointer;
   }
 
@@ -115,6 +133,6 @@
   .dropbox p {
     font-size: 1.2em;
     text-align: center;
-    padding: 50px 0;
+    /* padding: 50px 0; */
   }
 </style>

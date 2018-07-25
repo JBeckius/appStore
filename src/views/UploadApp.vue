@@ -172,25 +172,28 @@
 			loadIpa(name, file) {
 				console.log('uploading ipa: ', name, file);
 				this.ipaFile = file;
+				return Promise.resolve(file);
 				//apiManager.executables.upload(file);
 			},
 			loadApk(file) {
 				console.log('loading apk: ', file);
 				this.apkFile = file;
+				return Promise.resolve(file);
 			},
 			uploadExe(opts) {
 				console.log('uploading apk: ', name, file);
-				apiManager.executables.upload(opts);
+				return apiManager.executables.upload(opts);
 			},
 			uploadImg() {
 				let _this = this;
 				return (name, file) => {
 					console.log('uploading img: ', name, file);
 					_this.imageId = null;
-					apiManager.image.upload(file)
+					return apiManager.image.upload(file)
 					.then(resp => {
 						console.log('uploaded that image: ', resp);
 						_this.imageId = resp.data.id;
+						return resp.data.id;
 					})
 					.catch(err=> console.log(err));
 				}
