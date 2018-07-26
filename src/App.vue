@@ -9,12 +9,15 @@
 			<a class="logout" v-on:click="logout"> Logout</a>
     </div>
     <router-view/>
+		<Loading :show="showLoading"/>
   </div>
 </template>
 
 <script>
+	import Loading from 'vue-full-loading';
 	export default {
 		name: 'App',
+		components: {Loading},
 		methods: {
 			logout(){
 				localStorage.removeItem('access_token');
@@ -28,6 +31,9 @@
 			},
 			currentRoute() {
 				return this.$route.name;
+			},
+			showLoading() {
+				return this.$store.state.loading;
 			}
 		}
 	}

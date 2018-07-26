@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../store/store.js';
 
 export class baseAPI {
 
@@ -6,8 +7,13 @@ export class baseAPI {
 		this.axiosObject = axios.create({
 			baseURL: baseURLPath
 		});
+		this.axiosObject.interceptors.request.use((config)=> {
+			store.commit('updateLoading', true);
+			return config;
+		});
 		this.axiosObject.interceptors.response.use(function(resp) {
 			// console.log('resp: ', resp);
+			store.commit('updateLoading', false);
 			if (resp.status === 401) {
 				console.log('401, holmes');
 				localStorage.removeItem('access_token');
@@ -17,6 +23,7 @@ export class baseAPI {
 			return resp;
 		},
 		function(err) {
+			store.commit('updateLoading', false);
 			console.log('axios error: ', err);
 			if(JSON.stringify(err).includes('401')) {
 				console.error('401, holmes', err);

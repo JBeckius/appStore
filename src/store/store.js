@@ -10,6 +10,7 @@ export default new Vuex.Store({
 		user: {
 			role: null
 		},
+		loading: false,
 		apps: [
 			{
 				"applicationId": 12,
@@ -270,6 +271,9 @@ export default new Vuex.Store({
 		}
 	},
   mutations: {
+		updateLoading(state, isLoading) {
+			state.loading = isLoading;
+		},
 		updateApps(state, apps) {
 			if(apps.length > 0) state.apps = apps;
 		},
