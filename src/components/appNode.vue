@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<img class="img-thumbnail w-100 h-100 fitImage"
-					     :src="appData.image.path"/>
+					     :src="imgPath"/>
 				</div>
 				<div class="card-body col-sm-8">
 					<h5 class="card-title">{{appData.applicationName}}</h5>
@@ -49,6 +49,10 @@ export default {
 		},
 		currentVersion() {
 			return this.appData.versions.find(version => version.downloadEnabled === 1) || this.appData.versions[0];
+		},
+		imgPath() {
+			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
+			return baseURL + this.appData.image.path.substring(1);
 		}
 		// iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
 	}
