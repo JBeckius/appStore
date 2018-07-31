@@ -84,6 +84,7 @@ export default {
 		},
 		toggleVersionsModal() {
 			this.showVersions = !this.showVersions;
+			// test2
 		}
 	},
 	beforeMount() {
