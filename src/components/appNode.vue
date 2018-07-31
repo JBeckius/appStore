@@ -9,12 +9,13 @@
 				<div class="card-body col-sm-8">
 					<h5 class="card-title">{{appData.applicationName}}</h5>
 					<!-- <p class="card-text">Version {{latestVersion version}}</p> -->
-					<p class="card-text">{{currentVersion.version}}</p>
+					<p class="card-text">{{'Version ' + currentVersion.version}}</p>
 					<button class="btn btn-primary settingsBtn" :data-id="appData.applicationId" v-on:click="select()">
 						Settings
 					</button>
-					<a v-if="iOS" :href="href" class="btn btn-secondary">Download</a>
-					<a v-if="!iOS" :href="href" class="btn btn-secondary downloadBtn">Download</a>
+					<a v-if="iOS" :href="href" class="btn btn-secondary active">Download</a>
+					<a v-if="!iOS" v-on:click="downloadApp" class="btn btn-secondary active downloadBtn">Download</a>
+					<p class="noApp" v-if="noApp">No download available for this device type</p>
 				</div>
 			</div>
 		</div>
@@ -24,6 +25,7 @@
 
 <script>
 import SettingsModal from './modals/settingsModal.vue';
+import apiManager from '../api/apiManager.js';
 
 export default {
 	name: 'appNode',
@@ -32,15 +34,35 @@ export default {
 	data() {
 		return {
 			iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)),
-
+			noApp: false
 		}
 	},
 	methods: {
 		select() {
 
 				this.selectApp(this.index);
-
+		},
+		calcPath(path) {
+			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
+			return baseURL + path;
+		},
+		downloadApp() {
+			console.log('getting app: ', this.currentVersion.id);
+			return apiManager.executables.download(this.currentVersion.id)
+				.catch(err=> {
+					console.log('err downloading app: ', err);
+						this.noApp = true;
+				});
+		},
+		exeType(path){
+			return path === '' ? 'android' : 'ios';
+		},
+		checkVersionAgainstDevice(version) {
+			return (version.path == '' && !this.iOS) 		 ? true :
+						 (version.path.length > 0 && this.iOS) ? true
+						 																			 : false;
 		}
+
 	},
 	computed: {
 		href(){
@@ -48,16 +70,31 @@ export default {
 										  : this.currentVersion.path;
 		},
 		currentVersion() {
-			return this.appData.versions.find(version => version.downloadEnabled === 1) || this.appData.versions[0];
+			return this.appData.versions.find(version => version.downloadEnabled === 1 && this.checkVersionAgainstDevice(version)) || this.appData.versions[0];
 		},
 		imgPath() {
 			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
 			return baseURL + this.appData.image.path.substring(1);
 		}
-		// iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform))
 	}
 }
 </script>
 
 <style scoped>
+	img {
+			object-fit: contain;
+			/* margin-top: 5px; */
+	}
+	.card {
+		height: 100%;
+	}
+	.row {
+		padding: 5px 0;
+		height: 100%;
+	}
+	.noApp {
+		color: red;
+		margin: 0;
+		padding: 0;
+	}
 </style>
