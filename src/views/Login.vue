@@ -1,7 +1,7 @@
 <template>
 	<div class="container loginFormContainer">
 	<div class="w-50 mx-auto mb-4">
-		<img class="mx-auto d-block img-fluid" src="JD_logo.jpg" alt="Jackson Dawson Logo"/>
+		<img class="mx-auto d-block img-fluid" :src="calcPath('/JD_logo.jpg')" alt="Jackson Dawson Logo"/>
 	</div>
 	<form id="loginForm" @submit="getAuthorized" method="post">
 		<div class="input-group mb-3">
@@ -50,7 +50,18 @@
 						this.$router.push('/');
 					})
 					.catch(err => console.log('did not get authed: ', err));
+			},
+			calcPath(path) {
+				let baseURL = process.env.VUE_APP_BASE_CDN_URL;
+				return baseURL + path;
 			}
 		}
 	}
 </script>
+
+<style scoped>
+	img.img-fluid{
+		margin-top: 10px;
+	}
+
+</style>
