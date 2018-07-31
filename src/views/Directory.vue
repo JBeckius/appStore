@@ -9,7 +9,7 @@
 								<input v-model="searchText" type="text" class="form-control" name="query" id="query"
 								       placeholder="Search by app name or subdirectory">
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="submit">Search</button>
+									<button class="btn btn-outline-secondary" type="button">Search</button>
 								</div>
 							</div>
 						</form>
@@ -95,5 +95,7 @@ export default {
 </script>
 
 <style scoped>
-
+	button.btn {
+		z-index: 0;
+	}
 </style>
