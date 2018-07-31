@@ -25,7 +25,7 @@ export class baseAPI {
 		function(err) {
 			store.commit('updateLoading', false);
 			console.log('axios error: ', err);
-			if(JSON.stringify(err).includes('401')) {
+			if(JSON.stringify(err).includes('status code 401')) {
 				console.error('401, holmes', err);
 				localStorage.removeItem('access_token');
 				location.reload();
