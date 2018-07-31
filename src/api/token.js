@@ -21,11 +21,11 @@ export class Token extends baseAPI {
 			username,
 			grant_type: 'password'
 		}
-		console.log(data);
+		console.log('token request data: ', data);
 
 		return this.axiosObject.post(this.apiBaseName, querystring.stringify(data), {
 			headers: {
-				'Content-type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/x-www-form-urlencoded'
 			}
 		})
 	}
