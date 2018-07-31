@@ -57,7 +57,7 @@ export default {
 		exeType(path){
 			return path === '' ? 'android' : 'ios';
 		},
-		checkVersionAgainstDevice(version) {
+		compatibleWithDevice(version) {
 			return (version.path == '' && !this.iOS) 		 ? true :
 						 (version.path.length > 0 && this.iOS) ? true
 						 																			 : false;
@@ -70,7 +70,8 @@ export default {
 										  : this.currentVersion.path;
 		},
 		currentVersion() {
-			return this.appData.versions.find(version => version.downloadEnabled === 1 && this.checkVersionAgainstDevice(version)) || this.appData.versions[0];
+			return this.appData.versions.filter(version=>this.compatibleWithDevice(version))
+																	.find(version => version.downloadEnabled === 1) || this.appData.versions[0];
 		},
 		imgPath() {
 			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
@@ -83,7 +84,11 @@ export default {
 <style scoped>
 	img {
 			object-fit: contain;
+			border-radius: 15%;
 			/* margin-top: 5px; */
+	}
+	.img-thumbnail {
+		border: 0px;
 	}
 	.card {
 		height: 100%;
