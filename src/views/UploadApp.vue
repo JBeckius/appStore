@@ -175,8 +175,8 @@
 				return Promise.resolve(file);
 				//apiManager.executables.upload(file);
 			},
-			loadApk(file) {
-				console.log('loading apk: ', file);
+			loadApk(name, file) {
+				console.log('loading apk: ', name, file);
 				this.apkFile = file;
 				return Promise.resolve(file);
 			},
@@ -225,7 +225,7 @@
 							dateEnd : this.dateEndISO,
 							visible : this.visible ? true : false,
 							downloadEnabled :  true,
-							imageId : null,
+							imageId : this.imageId,
 							groupIds : [this.subdirectory],
 							clientId : this.clientId
 						}, (this.relatedApp) ? {
