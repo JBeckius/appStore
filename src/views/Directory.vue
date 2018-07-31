@@ -88,6 +88,7 @@ export default {
 	},
 	beforeMount() {
 		//this.apps = this.getApps();
+		// test
 	}
 }
 </script>
