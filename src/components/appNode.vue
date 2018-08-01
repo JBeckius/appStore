@@ -13,7 +13,7 @@
 					<button class="btn btn-primary settingsBtn" :data-id="appData.applicationId" v-on:click="select()">
 						Settings
 					</button>
-					<a v-if="iOS" :href="href" class="btn btn-secondary active" :disabled="currentVersion">Download</a>
+					<a v-if="iOS && currentVersion.path" :href="href" class="btn btn-secondary active" :disabled="currentVersion">Download</a>
 					<a v-if="!iOS" v-on:click="downloadApp" class="btn btn-secondary active downloadBtn">Download</a>
 					<p class="noApp" v-if="noApp">No download available for this device type</p>
 				</div>
@@ -71,7 +71,7 @@ export default {
 		},
 		currentVersion() {
 			return this.appData.versions.filter(version=>this.compatibleWithDevice(version))
-																	.find(version => version.downloadEnabled === 1) || this.appData.versions[0];
+																	.find(version => version.downloadEnabled === 1) || new Object();
 		},
 		imgPath() {
 			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
