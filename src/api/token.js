@@ -11,11 +11,11 @@ export class Token extends baseAPI {
 	}
 
 	getToken({password, username}, headers) {
-		let formData = new FormData();
-		formData.set('grant_type', 'password');
-		formData.set('username', username);
-		formData.set('password', password);
-		console.log(formData);
+		// let formData = new FormData();
+		// formData.set('grant_type', 'password');
+		// formData.set('username', username);
+		// formData.set('password', password);
+		// console.log(formData);
 		let data = {
 			password,
 			username,
