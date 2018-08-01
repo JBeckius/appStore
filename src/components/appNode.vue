@@ -85,6 +85,7 @@ export default {
 	img {
 			object-fit: contain;
 			border-radius: 15%;
+			max-height:150px;
 			/* margin-top: 5px; */
 	}
 	.img-thumbnail {
