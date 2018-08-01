@@ -275,7 +275,7 @@ export default new Vuex.Store({
 			state.loading = isLoading;
 		},
 		updateApps(state, apps) {
-			state.apps = apps;
+			if(apps.length > 0) state.apps = apps;
 		},
 		updateGroups(state, groups) {
 			state.groups = groups;
