@@ -92,7 +92,7 @@
 				return Math.ceil(this.appData.versions.length / this.versionsPerPage);
 			},
 			isAdmin() {
-				return this.$store.state.isAdmin;
+				return this.$store.getters.isAdmin;
 			}
 		}
 	}

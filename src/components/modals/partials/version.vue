@@ -35,7 +35,7 @@
 				return this.version ? this.version.fileSize : '1';
 			},
 			isAdmin() {
-				return this.$store.state.isAdmin;
+				return this.$store.getters.isAdmin;
 			}
 		},
 		methods: {
