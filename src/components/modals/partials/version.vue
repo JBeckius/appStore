@@ -6,7 +6,7 @@
 		<td>
 			<div class="form-check">
 				<input class="form-check-input position-static" type="checkbox"
-							 :id="'isDownloadable' + version.id" value="downloadable" :checked="version.downloadEnabled">
+							 :id="'isDownloadable' + version.id" value="downloadable" :checked="version.downloadEnabled" :disabled="!isAdmin">
 			</div>
 		</td>
 		<td>
@@ -33,6 +33,9 @@
 			},
 			fileSize() {
 				return this.version ? this.version.fileSize : '1';
+			},
+			isAdmin() {
+				return this.$store.state.isAdmin;
 			}
 		},
 		methods: {

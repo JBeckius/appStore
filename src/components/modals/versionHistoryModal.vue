@@ -52,7 +52,7 @@
 				<div class="modal-footer">
 						<span class="m-auto">
 							<button type="button" v-on:click="close" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary">Update</button>
+							<button type="button" class="btn btn-primary" :disabled="!isAdmin">Update</button>
 						</span>
 				</div>
 			</div>
@@ -90,6 +90,9 @@
 		computed: {
 			totalPages() {
 				return Math.ceil(this.appData.versions.length / this.versionsPerPage);
+			},
+			isAdmin() {
+				return this.$store.state.isAdmin;
 			}
 		}
 	}
