@@ -33,7 +33,7 @@ export default {
 	props: ['appData', 'selectApp', 'index'],
 	data() {
 		return {
-			iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)),
+			iOS: (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform) || (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)),
 			noApp: false
 		}
 	},
