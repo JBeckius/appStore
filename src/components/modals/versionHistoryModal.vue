@@ -116,4 +116,7 @@
 
 
 	}
+	#versionHistoryForm {
+		pointer-events: initial;
+	}
 </style>
