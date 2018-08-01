@@ -112,6 +112,7 @@
 		width: 80%;
 		margin: 0 10%;
 		height: 100%;
+		overflow-y: scroll;
 
 
 	}
