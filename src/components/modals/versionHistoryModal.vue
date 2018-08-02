@@ -116,6 +116,9 @@
 
 
 	}
+	.versionHistoryModal::-webkit-scrollbar {
+		display: none;
+	}
 	#versionHistoryForm {
 		pointer-events: initial;
 	}
