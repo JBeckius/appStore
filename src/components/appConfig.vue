@@ -30,6 +30,7 @@
 
 	export default {
 		name: "appConfig",
+		props: ['apps', 'update'],
 		data() {
 			return {
 				selectedAppId: null,
@@ -37,17 +38,12 @@
 			}
 		},
 		computed: {
-			apps() {
-				return this.$store.state.apps;
-			}
 		},
 		methods: {
 			updateApp(e) {
 				e.preventDefault();
 				if(this.appInput) {
-					return apiManager.apps.addADGroup(this.selectedAppId, this.appInput)
-						.then(()=> this.$store.dispatch('updateApps'))
-						.catch(err=>console.log('err updating app AD: ', err));
+					return this.update(this.selectedAppId, this.appInput)
 				}
 			}
 		}
@@ -55,4 +51,8 @@
 </script>
 
 <style>
+	#configMappingApplicationForm {
+		max-width: 500px;
+		margin: 0 auto;
+	}
 </style>

@@ -39,6 +39,7 @@
 	import apiManager from '../api/apiManager.js';
 	export default {
 		name:'clientConfig',
+		props: ['clients', 'update', 'create'],
 		data() {
 			return {
 				selectedClient: 'null',
@@ -48,9 +49,6 @@
 			}
 		},
 		computed: {
-			clients() {
-				return this.$store.state.clients;
-			},
 			modifyClient() {
 				return this.selectedClient === "new" ? this.createClient : this.updateClient;
 			},
@@ -63,10 +61,9 @@
 				e.preventDefault()
 				console.log('creating client: ', this.clientName, this.selectedAD);
 				this.status = 'uploading';
-				apiManager.groups.addAD({clientName: this.clientName, adName: this.selectedAD})
+				this.create({clientName: this.clientName, adName: this.selectedAD})
 					.then(()=> {
 						this.status = 'success';
-						this.$store.dispatch('updateClients');
 					})
 					.catch(() => {
 						this.status = 'failure';
@@ -81,10 +78,9 @@
 				e.preventDefault()
 				console.log('updating client: ', this.selectedClient.clientName, this.selectedAD);
 				this.status = 'uploading';
-				apiManager.groups.addAD({adName: this.selectedAD, id: this.selectedClient.id})
+				this.update({adName: this.selectedAD, id: this.selectedClient.id})
 					.then(()=> {
 						this.status = 'success';
-						this.$store.dispatch('updateClients');
 					})
 					.catch(() => this.status = 'failure')
 					.finally(() => {
@@ -98,4 +94,8 @@
 </script>
 
 <style scoped>
+#configMappingClientsForm {
+	max-width: 500px;
+	margin: 0 auto;
+}
 </style>

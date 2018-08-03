@@ -4,8 +4,8 @@
 			<div class="application" :class="{activeTab: (currentTab===0)}" v-on:click="changeTab(0)">Application</div>
 			<div class="clients" :class="{activeTab: (currentTab===1)}" v-on:click="changeTab(1)">Clients</div>
 		</div>
-		<AppConfig v-if="currentTab === 0" />
-		<ClientConfig v-if="currentTab === 1" />
+		<AppConfig v-if="currentTab === 0"  :apps="apps" :update="updateApp"/>
+		<ClientConfig v-if="currentTab === 1" :clients="clients" :update="updateClient" :create="createClient"/>
 		<!-- <div v-if="currentTab === 1" class="tab-pane fade show active" id="clientsTab" role="tabpanel">
 			<div class="alert alert-secondary">
 				<p class="mb-0">You may modify the AD group for a specific client, or add clients to the
@@ -63,6 +63,23 @@
 		methods: {
 			changeTab(index) {
 				this.currentTab = index;
+			},
+			updateClient(AD) {
+				return apiManager.groups.addAD(AD)
+					.then(() => {
+						return this.$store.dispatch('updateClients');
+					});
+			},
+			createClient(AD) {
+				return apiManager.groups.addAD(AD)
+					.then(() => {
+						return this.$store.dispatch('updateClients');
+					});
+			},
+			updateApp(id, adName) {
+				return apiManager.apps.addADGroup(id, adName)
+					.then(()=> this.$store.dispatch('updateApps'))
+					.catch(err=>console.log('err updating app AD: ', err));
 			}
 		}
 
