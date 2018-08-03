@@ -31,6 +31,7 @@
 									<Version v-for="(version, index) in appData.versions"
 													 :version="version"
 													 v-if="Math.ceil((index + 1)/versionsPerPage) === currentPage"
+													 :update="updateVersion"
 									/>
 								</tbody>
 							</table>
@@ -52,7 +53,7 @@
 				<div class="modal-footer">
 						<span class="m-auto">
 							<button type="button" v-on:click="close" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary" :disabled="!isAdmin">Update</button>
+							<button type="button" v-on:click="submitUpdates" class="btn btn-primary" :disabled="!isAdmin">Update</button>
 						</span>
 				</div>
 			</div>
@@ -64,6 +65,7 @@
 	import moment from 'moment';
 	import modalMixin from './appModalMixin.js';
 	import Version from './partials/version.vue';
+	import apiManager from '../../api/apiManager.js';
 
 	export default {
 		name: 'versionHistoryModal',
@@ -73,7 +75,10 @@
 		data() {
 			return {
 				versionsPerPage: 5,
-				currentPage: 1
+				currentPage: 1,
+				changeList: [],
+				versions: this.appData.versions,
+				updated: []
 			}
 		},
 		methods: {
@@ -85,6 +90,23 @@
 			},
 			prevPage() {
 				if(this.currentPage > 1) this.currentPage -= 1;
+			},
+			updateVersion(versionId, isEnabled) {
+				let enabledInt = isEnabled ? 1 : 0;
+				this.versions.find(version=>version.id===versionId).downloadEnabled = enabledInt;
+				if( !this.updated.find(id => versionId === id) ) this.updated.push(versionId);
+			},
+			submitUpdates() {
+				let updatedVersions = this.versions.filter( version => this.updated.includes(version.id));
+				let updatePromises = updatedVersions.map(version => apiManager.executables.put('', version));
+				Promise.all(updatePromises)
+					.catch(err => {
+						console.log('failed to update versions: ', err);
+					})
+					.then(respArr => {
+						return this.$store.dispatch('updateApps');
+					})
+
 			}
 		},
 		computed: {

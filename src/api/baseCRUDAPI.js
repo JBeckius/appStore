@@ -1,7 +1,7 @@
 import { baseAPI } from "./baseAPI.js";
 
 export class baseCRUDAPI extends baseAPI {
-	
+
 	constructor(baseURLPath) {
 		super(baseURLPath);
 
@@ -22,7 +22,11 @@ export class baseCRUDAPI extends baseAPI {
 	}
 
 	put(guid, objectData) {
-		return this.axiosObject.put(this.apiBaseName + '/' + guid, objectData);
+		return this.axiosObject.put(this.apiBaseName + '/' + guid, objectData, {
+			headers: {
+				'Content-type': 'application/json'
+			}
+		});
 	}
 
 	delete(guid) {

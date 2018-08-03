@@ -5,8 +5,13 @@
 		<td>{{fileSize/1000}} MB</td>
 		<td>
 			<div class="form-check">
-				<input class="form-check-input position-static" type="checkbox"
-							 :id="'isDownloadable' + version.id" value="downloadable" :checked="version.downloadEnabled" :disabled="!isAdmin">
+				<input v-model="enabled"
+							 class="form-check-input position-static"
+							 type="checkbox"
+							 :id="'isDownloadable' + version.id"
+							 value="downloadable"
+
+							 :disabled="!isAdmin">
 			</div>
 		</td>
 		<td>
@@ -21,10 +26,11 @@
 	import apiManager from '../../../api/apiManager.js';
 	export default {
 		name: 'version',
-		props: ['version'],
+		props: ['version', 'update'],
 		data() {
 			return {
-				noApp: false
+				noApp: false,
+				enabled: this.version.downloadEnabled ? true : false
 			}
 		},
 		computed: {
@@ -36,6 +42,11 @@
 			},
 			isAdmin() {
 				return this.$store.getters.isAdmin;
+			}
+		},
+		watch: {
+			enabled() {
+				return this.update(this.version.id, this.enabled);
 			}
 		},
 		methods: {
