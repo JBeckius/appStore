@@ -26,8 +26,6 @@
 </template>
 
 <script>
-	import apiManager from '../api/apiManager.js';
-
 	export default {
 		name: "appConfig",
 		props: ['apps', 'update'],

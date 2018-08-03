@@ -36,7 +36,6 @@
 </template>
 
 <script>
-	import apiManager from '../api/apiManager.js';
 	export default {
 		name:'clientConfig',
 		props: ['clients', 'update', 'create'],
