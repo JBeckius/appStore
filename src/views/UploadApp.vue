@@ -231,7 +231,7 @@
 						}, (this.relatedApp) ? {
 							applicationId : this.applicationId,
 							clientId :this.clientId,
-							clientAdIds : this.clients.find(client=> client.id === this.clientId)
+							//clientAdIds : this.clients.find(client=> client.id === this.clientId)
 						} : null)
 						if(versionIds.length > 0) opts.versionIds = versionIds;
 

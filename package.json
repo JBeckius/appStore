@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build-staging": "vue-cli-service build --mode=staging --dest=dist2",
+    "local": "vue-cli-service serve --mode=local",
+    "build-staging": "vue-cli-service build --mode=staging --dest=dist3",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"
