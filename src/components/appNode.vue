@@ -70,8 +70,9 @@ export default {
 										  : this.currentVersion.path;
 		},
 		currentVersion() {
+			if(!this.appData.versions[0]) return {downloadEnabled: 0, version: '1', path: ''};
 			return this.appData.versions.filter(version=>this.compatibleWithDevice(version))
-																	.find(version => version.downloadEnabled === 1) || { downloadEnabled: 0, version: this.appData.versions[0].version};
+																	.find(version => version.downloadEnabled === 1) || { downloadEnabled: 0, version: this.appData.versions[0], path: this.appData.versions[0].path};
 		},
 		imgPath() {
 			let baseURL = process.env.VUE_APP_BASE_CDN_URL;
