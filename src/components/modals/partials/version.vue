@@ -2,7 +2,7 @@
 	<tr >
 		<th scope="row">{{version.version}}</th>
 		<td>{{date}}</td>
-		<td>{{fileSize/1000}} MB</td>
+		<td>{{fileSize}} MB</td>
 		<td>
 			<div class="form-check">
 				<input v-model="enabled"
@@ -24,9 +24,11 @@
 <script>
 	import moment from 'moment';
 	import apiManager from '../../../api/apiManager.js';
+	import appModalMixin from '../appModalMixin.js';
 	export default {
 		name: 'version',
 		props: ['version', 'update'],
+		mixins: [appModalMixin],
 		data() {
 			return {
 				noApp: false,
@@ -38,7 +40,7 @@
 				return moment(this.version.dateUploaded).format("MM/DD/YYYY");
 			},
 			fileSize() {
-				return this.version ? this.version.fileSize : '1';
+				return this.version ? this.version.fileSize / 1000 : '1';
 			},
 			isAdmin() {
 				return this.$store.getters.isAdmin;
