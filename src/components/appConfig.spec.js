@@ -85,4 +85,11 @@ describe('appConfig.vue', ()=>{
 		wrapper.find('#configApplication').find('option').setSelected();
 		expect(wrapper.vm.selectedAppId).to.equal(12);
 	})
+
+	it('should populate select options from its passed in data', ()=> {
+		let wrapper = shallowMount(AppConfig);
+		wrapper.setProps({ apps });
+		let options = wrapper.find('#configApplication').findAll('option');
+		expect(options.length).to.equal(apps.length);
+	})
 })

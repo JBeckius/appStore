@@ -9,7 +9,8 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="row">
+					<SettingsInfo :appData="appData" :showVersions="showVersions"/>
+					<!-- <div class="row">
 						<div class="col-md-4 font-weight-bold">
 							<h4>{{appData.applicationName}}</h4>
 							<p class="mb-0">Version {{latestVersion}}
@@ -24,56 +25,12 @@
 						<div class="col-md-8">
 							<p class="mb-0">{{appData.description}}</p>
 						</div>
-					</div>
+					</div> -->
 					<div v-if="!isAdmin" class="alert alert-primary" role="alert">
 						<i class="fa fa-info-circle"></i> Please contact an administrator to change any of these settings
 					</div>
-						<form v-if="isAdmin" id="settingsForm">
-							<div class="form-row">
-								<div class="form-group col-md-6">
-									<div class="form-check">
-										<input v-model="visible" class="form-check-input" type="checkbox" name="visible" id="visible"
-										       :checked="visible">
-										<label class="form-check-label" for="visibleInDirectory">
-											Visible in Directory
-										</label>
-									</div>
-									<div class="form-check">
-										<input v-model="downloadEnabled" class="form-check-input" type="checkbox" name="downloadEnabled" id="downloadEnabled"
-										       :checked="downloadEnabled ? false : true">
-										<label class="form-check-label" for="downloadEnabled">
-											Download Enabled
-										</label>
-									</div>
-									<p>Subdirectory: {{subdirectoryName}}</p>
-								</div>
-								<div class="form-group col-md-6">
-									<div class="form-row">
-										<div class="col-md-6 my-1">
-											<label class="sr-only" for="settingsModalStartDate">Start Date</label>
-											<!-- <input type="text" class="form-control" name="dateStart2" id="dateStart2"
-											       placeholder="Start Date" :value="appData.dateStart"> -->
-											<DatePicker class="datePickerSettings form-control" v-model="dateStart" placeholder="Start Date" typeable />
-
-										</div>
-										<div class="col-md-6 my-1">
-											<label class="sr-only" for="settingsModalEndDate">End Date</label>
-											<!-- <input type="text" class="form-control" name="dateEnd2" id="dateEnd2"
-											       placeholder="End Date" :value="appData.dateEnd"> -->
-											<DatePicker class="datePickerSettings form-control" v-model="dateEnd" placeholder="End Date" typeable />
-											<small id="endDateHelp" class="form-text text-muted">If blank, never expires</small>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<span class="m-auto">
-									<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal" v-on:click="close">Cancel</button>
-									<button type="submit" class="btn btn-primary">Update</button>
-								</span>
-							</div>
-						</form>
-						<div v-if="!isAdmin" class="form-row">
+					<SettingsForm :isAdmin="isAdmin" :close="close" :appData="appData" :update="update"/>
+						<!-- <div v-if="!isAdmin" class="form-row">
 							<div class="form-group col-md-6">
 								<div class="form-check">
 									<input class="form-check-input" type="checkbox" id="visible" name="visible"
@@ -106,7 +63,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<!-- <div class="modal-footer">
 							<span class="m-auto">
 								<button type="button" class="btn btn-secondary closeModal" id="closeModal" data-dismiss="modal">Cancel</button>
@@ -123,11 +80,13 @@
 	import apiManager from '../../api/apiManager.js';
 	import modalMixin from './appModalMixin.js';
 	import DatePicker from 'vuejs-datepicker';
+	import SettingsInfo from './partials/settingsInfo.vue';
+	import SettingsForm from './partials/settingsForm.vue';
 
 	export default {
 		name: 'settingsModal',
 		mixins: [modalMixin],
-		components: {DatePicker},
+		components: {DatePicker, SettingsInfo, SettingsForm},
 		// props: ['appData', 'close'],
 		props: {
 			appData: {
@@ -161,9 +120,9 @@
 			}
 		},
 		methods: {
-			update() {
+			update(app, updates) {
 
-				apiManager.apps.update()
+				return apiManager.apps.update(app, updates);
 			}
 		}
 	}
