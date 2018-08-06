@@ -66,7 +66,7 @@
 			submit(e) {
 				// e.preventDefault();
 
-				return this.update(this.appData, {dateStart: this.dateStart,
+				return this.update({dateStart: this.dateStart,
 														dateEnd: this.dateEnd,
 														visible: this.visible,
 														downloadEnabled: this.downloadEnabled
@@ -76,6 +76,13 @@
 	}
 </script>
 
-<style scoped>
+<style>
+	.datePickerSettings {
+		width: 100%;
+		padding: 0;
+	}
 
+	.datePickerSettings div input {
+		width: 100%;
+	}
 </style>
