@@ -6,6 +6,7 @@ import Directory from './views/Directory.vue'
 import UploadApp from './views/UploadApp.vue'
 import DownloadReport from './views/DownloadReport.vue'
 import ConfigMapping from './views/ConfigMapping.vue'
+import Users from './views/Users.vue';
 import Login from './views/Login.vue'
 import Store from './store/store.js'
 
@@ -63,7 +64,17 @@ let router =  new Router({
 			meta: {
 				requiresAuth: true
 			}
+		},
+		{
+			path: '/users',
+			name: 'users',
+			component: Users,
+			meta: {
+				requiresAuth: true
+			}
 		}
+
+
   ]
 })
 

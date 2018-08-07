@@ -6,6 +6,7 @@
 			<router-link to="/">Directory</router-link> |
 			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/uploadApp">Upload App</router-link> | </span>
 			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/configMapping">Config Mapping</router-link> | </span>
+			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/users">Users</router-link> | </span>
 			<a class="logout" v-on:click="logout"> Logout</a>
     </div>
     <router-view/>
