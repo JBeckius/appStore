@@ -28,7 +28,7 @@
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-4">
-							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory" required>
+							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory">
 								<option :value="null" selected="selected">Subdirectory</option>
 								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory.id">{{subdirectory.name}}</option>
 							</select>
@@ -293,7 +293,7 @@
 			relatedApp() {
 				let app = this.relatedApp;
 				this.subdirectory = app.subdirectory && app.subdirectory.id ? app.subdirectory.id : null;
-				this.applicationVersion = app.versions[0].version || null;
+				this.applicationVersion = app.versions[0] ? app.versions[0].version : null;
 				this.applicationName = app.applicationName || null;
 				this.description = app.description || null;
 				this.bundleId = app.bundleId || null;
@@ -305,7 +305,7 @@
 				this.imageId = app.image.id || null;
 				this.groupIds = app.groupIds || null;
 				this.applicationId = app.applicationId || null;
-				this.clientId = app.clientADs.id || null;
+				this.clientId = app.clientADs ? app.clientADs.id : null;
 				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
 
 			}
