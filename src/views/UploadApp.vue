@@ -29,7 +29,7 @@
 					<div class="form-row">
 						<div class="form-group col-md-4">
 							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory">
-								<option :value="null" selected="selected">Subdirectory</option>
+								<option :value="null" selected="selected">Group</option>
 								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory.id">{{subdirectory.name}}</option>
 							</select>
 						</div>
@@ -98,7 +98,7 @@
 				<h5 class="card-header">Security Settings</h5>
 				<div class="card-body">
 					<div class="form-row">
-						<Dropdown v-model="clientId" :options="clients" optionValue="id" optionDisplay="clientName" placeholder="Select a Client" name="clients"/>
+						<Dropdown v-model="clientId" :options="clients" optionValue="id" optionDisplay="name" placeholder="Select a Client" name="clients"/>
 						<div class="form-group col-md-4 my-1">
 							<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date" typeable/>
 						</div>

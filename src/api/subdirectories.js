@@ -4,7 +4,7 @@ export class Subdirectories extends baseCRUDAPI {
 
 	constructor(baseURLPath) {
 		super(baseURLPath);
-		this.apiBaseName = 'group/list/subdirectory';
+		this.apiBaseName = 'group';
 	}
 
 	// getGroupById(groupId) {
