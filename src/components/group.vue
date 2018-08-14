@@ -1,7 +1,11 @@
 <template>
 	<div class="group">
-		<p>{{group.name}}</p>
-		<input type="checkbox" v-model="check" />
+		<!-- <div class="verticalAlign"> -->
+			<p>{{group.name}}</p>
+		<!-- </div> -->
+		<div class="verticalAlign">
+			<input type="checkbox" v-model="check" />
+		</div>
 	</div>
 </template>
 
@@ -25,4 +29,25 @@
 </script>
 
 <style scoped>
+.group {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 10%;
+}
+.group:nth-child(even) {
+	background-color: lightgrey;
+}
+p {
+	display: inline;
+	margin-bottom: 0;
+}
+
+.verticalAlign {
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+}
+input {
+
+}
 </style>
