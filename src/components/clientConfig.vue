@@ -9,7 +9,7 @@
 			<div class="form-group">
 				<select type="text" v-model="selectedClient" class="form-control" id="configClient" name="configClient" required>
 					<option :value="null">Clients</option>
-					<option v-for="client in clients" :value="client">{{client.clientName}}</option>
+					<option v-for="client in clients" :value="client">{{client.name}}</option>
 					<option :value="'new'">Add New</option>
 				</select>
 				<div class="invalid-feedback">
