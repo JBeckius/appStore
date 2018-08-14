@@ -4,7 +4,7 @@ export class Clients extends baseCRUDAPI {
 
 	constructor(baseURLPath) {
 		super(baseURLPath);
-		this.apiBaseName = 'group/list/client';
+		this.apiBaseName = '/client';
 	}
 
 	// getGroupById(groupId) {
