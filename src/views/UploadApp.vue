@@ -305,7 +305,7 @@
 				this.imageId = app.image.id || null;
 				this.groupIds = app.groupIds || null;
 				this.applicationId = app.applicationId || null;
-				this.clientId = app.clientADs ? app.clientADs.id : null;
+				this.clientId = app.clientId || null;
 				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
 
 			}
