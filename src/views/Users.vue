@@ -23,18 +23,18 @@
 			}
 		},
 		methods: {
-			addGroup() {
-				return this.apiManager.user.addGroup
+			addGroup({username, groupId}={}) {
+				return apiManager.user.addGroup({username, groupId});
 			},
-			removeGroup() {
-
+			removeGroup({username, groupId}={}) {
+				return apiManager.user.removeGroup({username, groupId});
 			},
-			getUserGroups() {
-				this.updating = true;
-				return Promise.resolve([{
-							id: 18,
-							name: 'group3'
-						}]);
+			getUserGroups(username) {
+				// return Promise.resolve([{
+				// 			id: 18,
+				// 			name: 'group3'
+				// 		}]);
+				return apiManager.user.getUserGroups(username).then(resp=>resp.data);
 
 			}
 		}

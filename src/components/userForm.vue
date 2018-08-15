@@ -10,7 +10,7 @@
 				<button type="button" v-on:click="()=>this.noExisting = false">Create User</button>
 			</div>
 		</div>
-		<div class="client field" v-if="updating && ! noExisting">
+		<div class="client field" v-if="updating && !noExisting">
 			<select v-model="clientId"
 							v-on:click="click"
 			>
@@ -19,8 +19,8 @@
 			</select>
 			<!-- <div class="clientWarning"><p>Selecting a new client will remove current group selections</p></div> -->
 		</div>
-		<div v-if="client && client.groups.length > 0" class="groupsSelect">
-			<p>Select Groups: </p>
+		<div v-if="client && client.groups.length > 0 && updating && !noExisting" class="groupsSelect">
+			<p>Select Groups to instantly add them to a user: </p>
 			<div class="groups">
 				<Group v-for="group in client.groups"
 							 :key="group.id"
@@ -43,7 +43,7 @@
 	export default {
 		name: 'userForm',
 		components: {Group},
-		props: ['clients', 'getUserGroups', 'update', 'create'],
+		props: ['clients', 'getUserGroups', 'addGroup', 'removeGroup'],
 		data() {
 			return {
 				updating: false,
@@ -70,33 +70,52 @@
 			// 	this.updating = true;
 			// 	this.update();
 			// },
-			// clearUpdate() {
-			// 	this.updating = false;
-			// },
+			clearUpdate() {
+				this.updating = false;
+				this.groups = [];
+				this.$forceUpdate();
+			},
 			toggleGroup(id) {
-				debugger;
 				let idExists = this.groups.includes(id);
+				let reqData = {username: this.username, groupId: id};
 				if(idExists) {
-					currentGroup.groups = this.groups.filter(group => group !== id);
+					return this.removeGroup(reqData)
+						.then(()=>{
+							this.groups = this.groups.filter(group => group !== id);
+						})
+						.then(()=>this.getUser())
+						.catch(err=>{
+							console.log('error removing group: ', id, err);
+						});
 				}
 				else {
+					return this.addGroup(reqData)
+						.then(()=>{
+							this.groups = this.groups.concat([id]);
+						})
+						.then(()=>this.getUser())
+						.catch(err=>{
+							console.log('error adding group: ', id);
+						});
 
-					this.groups = this.groups.concat([id]);
 				}
 			},
 			getUser() {
-				this.updating = true;
 				// this.groups = this.resetGroups();
-				return this.getUserGroups()
+				this.updating = false;
+				return this.getUserGroups(this.username)
 					.then(groups => {
 						console.log('getzin groups: ', groups);
 						if(groups.length === 0) return this.noExisting = true;
-						else return this.groups = groups.map(group => group.id);
+						else {
+							this.groups = groups.map(group => group.id);
+							this.updating = true;
+							return this.$forceUpdate();
+						}
 						// this.clientId = user.client.id;
 						// let groupIds = user.client.groups.map(group => group.id);
 						// this.groups = this.groups.map(group => group.id === this.clientId ? {id: group.id, groups: groupIds} : group);
 						// this.$nextTick(()=> this.$forceUpdate());
-						// this.$forceUpdate();
 					})
 					.catch(err => {
 						console.log('error getting user: ', err);

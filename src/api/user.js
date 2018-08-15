@@ -11,8 +11,8 @@ export class User extends baseAPI {
 		return this.axiosObject.get(this.apiBaseName + '/auth');
 	}
 
-	getUserGroups() {
-		return this.axiosObject.get(this.apiBaseName + '/groups');
+	getUserGroups(username) {
+		return this.axiosObject.get(this.apiBaseName + '/groups?sUsername=' + username);
 	}
 
 	getUsername() {
@@ -24,25 +24,17 @@ export class User extends baseAPI {
 	}
 
 	addGroup({username, groupId}={}) {
-		let data = {
-			username,
-			groupId
-		};
-		return this.axiosObject.post(this.apiBaseName + '/group', data, {
+		return this.axiosObject.post(this.apiBaseName + '/group', {username, groupId}, {
 			headers: {
-				'Content-type': 'application/json'
+				'Content-Type': 'application/json'
 			}
 		});
 	}
 
-	removeGroup({username, groupId}) {
-		let data = {
-			username,
-			groupId
-		};
-		return this.axiosObject.delete(this.apiBaseName + '/group', data, {
+	removeGroup({username, groupId}={}) {
+		return this.axiosObject({method: 'delete', url: this.apiBaseName + '/group', data:{username, groupId},
 			headers: {
-				'Content-type': 'application/json'
+				'Content-Type': 'application/json'
 			}
 		});
 	}
