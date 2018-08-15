@@ -1,10 +1,10 @@
 <template>
 	<div class="Users">
 		<h5>Add or Update User</h5>
-		<UserForm :userGroupsRequest="userRequest"
+		<UserForm :getUserGroups="getUserGroups"
 							:clients="clients"
-							:update="update"
-							:create="create"
+							:addGroup="addGroup"
+							:removeGroup="removeGroup"
 		/>
 	</div>
 
@@ -13,93 +13,29 @@
 <script>
 
 	import UserForm from '../components/userForm.vue';
+	import apiManager from '../api/apiManager.js';
 	export default {
 		name: 'Users',
 		components: {UserForm},
 		computed: {
 			clients() {
 				return this.$store.state.clients;
-				// return [{
-				// 		id: 0,
-				// 		clientName: 'abc',
-				// 		groups: [
-				// 			{
-				// 				id: 0,
-				// 				name: 'group0'
-				// 			},
-				// 			{
-				// 				id: 1,
-				// 				name: 'group1'
-				// 			},
-				// 			{
-				// 				id: 2,
-				// 				name: 'group0'
-				// 			},
-				// 			{
-				// 				id: 3,
-				// 				name: 'group1'
-				// 			},
-				// 			{
-				// 				id: 4,
-				// 				name: 'group0'
-				// 			},
-				// 			{
-				// 				id: 5,
-				// 				name: 'group1'
-				// 			},
-				// 			{
-				// 				id: 6,
-				// 				name: 'group0'
-				// 			},
-				// 			{
-				// 				id: 7,
-				// 				name: 'group1'
-				// 			},
-				// 			{
-				// 				id: 8,
-				// 				name: 'group0'
-				// 			},
-				// 			{
-				// 				id: 9,
-				// 				name: 'group1'
-				// 			},
-				// 		]
-				// 	},
-				// 	{
-				// 		clientName: 'def',
-				// 		id: 1,
-				// 		groups: [
-				// 			{
-				// 				id: 24,
-				// 				name: 'group2'
-				// 			},
-				// 			{
-				// 				id: 34,
-				// 				name: 'group3'
-				// 			},
-				// 		]
-				// 	}
-				// ]
 			}
 		},
 		methods: {
-			update() {
-				return console.log('updating');
+			addGroup() {
+				return this.apiManager.user.addGroup
 			},
-			create() {
-				return console.log('creating');
+			removeGroup() {
+
 			},
-			userGroupsRequest() {
+			getUserGroups() {
 				this.updating = true;
-				return Promise.resolve({
-					client: {
-						id: 1,
-						groups: [{
-							id: 34,
+				return Promise.resolve([{
+							id: 18,
 							name: 'group3'
-						}]
-					}
-				});
+						}]);
+
 			}
 		}
 

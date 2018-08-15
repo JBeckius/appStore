@@ -22,4 +22,28 @@ export class User extends baseAPI {
 	logout() {
 		return this.axiosObject.post(this.apiBaseName + '/logout');
 	}
+
+	addGroup({username, groupId}={}) {
+		let data = {
+			username,
+			groupId
+		};
+		return this.axiosObject.post(this.apiBaseName + '/group', data, {
+			headers: {
+				'Content-type': 'application/json'
+			}
+		});
+	}
+
+	removeGroup({username, groupId}) {
+		let data = {
+			username,
+			groupId
+		};
+		return this.axiosObject.delete(this.apiBaseName + '/group', data, {
+			headers: {
+				'Content-type': 'application/json'
+			}
+		});
+	}
 }

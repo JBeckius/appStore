@@ -24,7 +24,7 @@
 			<div class="groups">
 				<Group v-for="group in client.groups"
 							 :key="group.id"
-							 :selected="currentGroups.includes(group.id)"
+							 :selected="groups.includes(group.id)"
 							 :group="group"
 							 :toggle="toggleGroup"
 				/>
@@ -43,14 +43,14 @@
 	export default {
 		name: 'userForm',
 		components: {Group},
-		props: ['clients', 'userRequest', 'update', 'create'],
+		props: ['clients', 'getUserGroups', 'update', 'create'],
 		data() {
 			return {
 				updating: false,
 				username: null,
 				clientId: null,
-				groups: this.getEmptyClients(),
-				noExisting: true,
+				groups: [],
+				noExisting: false,
 				updatingUser: false
 
 			}
@@ -66,28 +66,36 @@
 			}
 		},
 		methods: {
-			updateUser() {
-				this.updating = true;
-				this.update();
-			},
-			clearUpdate() {
-				this.updating = false;
-			},
+			// updateUser() {
+			// 	this.updating = true;
+			// 	this.update();
+			// },
+			// clearUpdate() {
+			// 	this.updating = false;
+			// },
 			toggleGroup(id) {
-				let idExists = this.currentGroups.includes(id);
-				let currentGroup = this.groups.find(group => group.id === this.clientId);
-				if(idExists) currentGroup.groups = this.currentGroups.filter(group => group !== id);
-				else currentGroup.groups = this.currentGroups.concat([id]);
+				debugger;
+				let idExists = this.groups.includes(id);
+				if(idExists) {
+					currentGroup.groups = this.groups.filter(group => group !== id);
+				}
+				else {
+
+					this.groups = this.groups.concat([id]);
+				}
 			},
 			getUser() {
 				this.updating = true;
 				// this.groups = this.resetGroups();
-				this.userRequest()
-					.then(user => {
-						this.clientId = user.client.id;
-						let groupIds = user.client.groups.map(group => group.id);
-						this.groups = this.groups.map(group => group.id === this.clientId ? {id: group.id, groups: groupIds} : group);
-						this.$nextTick(()=> this.$forceUpdate());
+				return this.getUserGroups()
+					.then(groups => {
+						console.log('getzin groups: ', groups);
+						if(groups.length === 0) return this.noExisting = true;
+						else return this.groups = groups.map(group => group.id);
+						// this.clientId = user.client.id;
+						// let groupIds = user.client.groups.map(group => group.id);
+						// this.groups = this.groups.map(group => group.id === this.clientId ? {id: group.id, groups: groupIds} : group);
+						// this.$nextTick(()=> this.$forceUpdate());
 						// this.$forceUpdate();
 					})
 					.catch(err => {
@@ -142,12 +150,4 @@
 	.clientWarning {
 		font-style: italic;
 	}
-
-	/* .userSubmit {
-		margin: 20px 0px;
-	}
-	.userSubmit button {
-		width: 100px;
-		height: 35px;
-	} */
 </style>
