@@ -26,7 +26,7 @@ export class Apps extends baseCRUDAPI {
 			visible : app.visible ? true : false,
 			downloadEnabled :  true,
 			imageId : app.image.id,
-			groupIds : [app.subdirectory.id],
+			groupIds : [app.subdirectory],
 			//clientId : app.clientId,
 			//clientAdIds: app.clientAdIds,
 			versionIds: []
