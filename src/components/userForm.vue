@@ -5,9 +5,9 @@
 			<input v-model="username" type="text" placeholder="username" :disabled="updating"/>
 			<button type="button" v-if="!updating" v-on:click="getUser">Search</button>
 			<button type="button" v-if="updating" v-on:click="clearUpdate">X</button>
-			<div v-if="noExisting && updating" class="noExisting">
+			<div v-if="noExisting" class="noExisting">
 				<p>This user does not exist</p>
-				<button type="button" v-on:click="()=>this.noExisting = false">Create User</button>
+				<button type="button" v-on:click="()=>{this.noExisting = false; this.updating = true;}">Create User</button>
 			</div>
 		</div>
 		<div class="client field" v-if="updating && !noExisting">

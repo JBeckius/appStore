@@ -40,11 +40,11 @@ export class Apps extends baseCRUDAPI {
 			}
 		});
 	}
-	addADGroup(appId, adName) {
+	addGroups(appId, groupIds) {
 		let data = {
 			applicationId: appId,
-			adName
+			groupIds
 		};
-		return this.axiosObject.post(this.apiBaseName + '/AD', data);
+		return this.axiosObject.post(this.apiBaseName + '/groups', data);
 	}
 }

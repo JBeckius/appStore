@@ -30,7 +30,7 @@
 						<div class="form-group col-md-4">
 							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory">
 								<option :value="null" selected="selected">Group</option>
-								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory.id">{{subdirectory.name}}</option>
+								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory">{{subdirectory.name}}</option>
 							</select>
 						</div>
 						<div class="form-group col-md-8">
@@ -226,7 +226,7 @@
 							visible : this.visible ? true : false,
 							downloadEnabled :  true,
 							imageId : this.imageId,
-							groupIds : [this.subdirectory],
+							groupIds : [this.subdirectory.id],
 							clientId : this.clientId
 						}, (this.relatedApp) ? {
 							applicationId : this.applicationId,
@@ -237,6 +237,9 @@
 
 						if(this.applicationId) return apiManager.apps.update(this.relatedApp, opts);
 						else return apiManager.apps.upload(opts);
+					})
+					.then(resp => {
+						return apiManager.apps.addGroups(this.applicationId, this.groupIds)
 					})
 					.then(resp => this.$router.push('/'));
 
@@ -292,7 +295,7 @@
 		watch: {
 			relatedApp() {
 				let app = this.relatedApp;
-				this.subdirectory = app.subdirectory && app.subdirectory.id ? app.subdirectory.id : null;
+				this.subdirectory = app.groups[0] || [];
 				this.applicationVersion = app.versions[0] ? app.versions[0].version : null;
 				this.applicationName = app.applicationName || null;
 				this.description = app.description || null;
@@ -303,7 +306,7 @@
 				this.downloadEnabled = app.downloadEnabled || true;
 				this.versionIds = app.versions.map(version=>version.id) || [];
 				this.imageId = app.image.id || null;
-				this.groupIds = app.groupIds || null;
+				this.groupIds = app.groups[0] ? [app.groups[0].id] : [];
 				this.applicationId = app.applicationId || null;
 				this.clientId = app.clientId || null;
 				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
