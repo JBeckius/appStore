@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div v-if="currentRoute !== 'login'"id="nav">
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/about">About</router-link> |
+      <!--<router-link to="/home">Home</router-link> | -->
+      <!-- <router-link to="/about">About</router-link> | -->
 			<router-link to="/">Directory</router-link> |
 			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/uploadApp">Upload App</router-link> | </span>
 			<span v-if="isAdmin"><router-link v-if="isAdmin" to="/configMapping">Config Mapping</router-link> | </span>
