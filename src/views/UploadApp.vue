@@ -27,12 +27,6 @@
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="form-group col-md-4">
-							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory">
-								<option :value="null" selected="selected">Group</option>
-								<option v-if="subdirectories" v-for="subdirectory in subdirectories" :value="subdirectory">{{subdirectory.name}}</option>
-							</select>
-						</div>
 						<div class="form-group col-md-8">
 							<input v-model="description" type="text" class="form-control" id="description" name="description"
 										 placeholder="Application Description" required>
@@ -99,6 +93,25 @@
 				<div class="card-body">
 					<div class="form-row">
 						<Dropdown v-model="clientId" :options="clients" optionValue="id" optionDisplay="name" placeholder="Select a Client" name="clients"/>
+						<AddGroup type="Client" :addGroup="addClient"/>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-4 my-1">
+							<select v-model="subdirectory" class="form-control" id="subdirectory" name="subdirectory" :disabled="!clientId || !(groups.length > 0)">
+								<option :value="null" selected="selected">Group</option>
+								<option v-if="subdirectories" v-for="group in groups" :value="group">{{group.name}}</option>
+							</select>
+						</div>
+						<AddGroup type="Group" :addGroup="addGroup" v-if="clientId"/>
+					</div>
+
+					<!-- <div class="form-row addGroup" v-if="clientId">
+						<button type="button" class="form-group my-1">Add Group</button>
+						<div class="form-Group my-1">
+							<input class="groupName form-control" type="text" placeholder="Group Name" />
+						</div>
+					</div> -->
+					<div class="form-row">
 						<div class="form-group col-md-4 my-1">
 							<DatePicker class="datePicker form-control" v-model="dateStart" placeholder="Start Date" typeable/>
 						</div>
@@ -125,6 +138,7 @@
 	import DatePicker from 'vuejs-datepicker';
 	import Checkbox from '../components/inputs/checkbox.vue';
 	import Dropdown from '../components/inputs/dropdown.vue';
+	import AddGroup from '../components/addGroup.vue';
 	import apiManager from '../api/apiManager.js';
 
 	export default {
@@ -133,7 +147,8 @@
 			FileUpload,
 			DatePicker,
 			Checkbox,
-			Dropdown
+			Dropdown,
+			AddGroup
 		},
 		data() {
 			return {
@@ -197,6 +212,28 @@
 					})
 					.catch(err=> console.log(err));
 				}
+			},
+			addGroup(groupName) {
+				let _this = this;
+				// let newGroup = this.groups.concat()
+
+				return apiManager.groups.post({name: groupName})
+					.then(resp => {
+						let newGroup = resp.data;
+						let newGroups = _this.groups.concat([newGroup]);
+						let groupIds = newGroups.map(group=>group.id);
+						return apiManager.clients.addGroups(_this.clientId, groupIds);
+					})
+					.then(()=>this.$store.dispatch('updateClients'))
+					//.then(()=>);
+			},
+			addClient(clientName) {
+				let _this = this;
+				return apiManager.clients.post({name: clientName})
+					.then((resp)=>{
+						_this.clientId = resp.data.id;
+						return this.$store.dispatch('updateClients')
+					});
 			},
 			uploadApp() {
 				let exeFiles = [this.apkFile, this.ipaFile];
@@ -285,6 +322,10 @@
 			clients() {
 				return this.$store.state.clients;
 			},
+			groups() {
+				let client = this.clients.find(client => client.id === this.clientId);
+				return client ? client.groups : [];
+			},
 			dateStartISO() {
 				return this.dateStart ? moment(this.dateStart).toISOString() : ""
 			},
@@ -317,5 +358,4 @@
 </script>
 
 <style scoped>
-
 </style>
