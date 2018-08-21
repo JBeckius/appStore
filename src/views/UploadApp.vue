@@ -7,7 +7,7 @@
 					<div class="form-row">
 						<div class="form-group col-md-3">
 							<select v-model="relatedApp" class="form-control" id="relatedApps" name="relatedApps">
-								<option :value="null" selected="selected">Related Application</option>
+								<option :value="null" selected="selected">Update Application</option>
 								<option v-if="apps" v-for="app in apps" :value="app">{{app.applicationName}}</option>
 							</select>
 						</div>
