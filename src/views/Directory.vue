@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<div class="row appsDirectory">
-					<AppNode v-for="(app, index) in filteredApps" :appData="app" :selectApp="selectApp" :index="index"/>
+					<AppNode v-for="(app, index) in filteredApps" :appData="app" :selectApp="selectApp" :index="index" :key="app.applicationId"/>
 					<!-- {{#if apps}}
 						{{#each apps as |app|}}
 							{{> app}}
