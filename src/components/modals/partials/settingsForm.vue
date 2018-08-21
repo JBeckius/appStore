@@ -16,7 +16,7 @@
 						Download Enabled
 					</label>
 				</div>
-				<p>Subdirectory: {{subdirectoryName}}</p>
+				<p>Group: {{name}}</p>
 			</div>
 			<div class="form-group col-md-6">
 				<div class="form-row">
@@ -53,12 +53,13 @@
 				dateStart: this.appData.dateStart,
 				dateEnd: this.appData.dateEnd,
 				visible: this.appData.visible,
-				downloadEnabled: this.appData.downloadEnabled
+				downloadEnabled: this.appData.downloadEnabled,
+				name: this.appData.name
 			}
 		},
 		computed: {
 			subdirectoryName() {
-				let subdirectory = this.appData.subdirectory;
+				let subdirectory = this.appData.groups[0];
 				return subdirectory && subdirectory.name ? subdirectory.name : 'none';
 			}
 		},

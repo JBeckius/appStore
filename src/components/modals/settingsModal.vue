@@ -55,6 +55,7 @@
 			},
 			formData() {
 				return {
+					name: this.appData.groups[0].name,
 					dateStart: this.appData.dateStart,
 					dateEnd: this.appData.dateEnd,
 					visible: this.appData.visible,
@@ -65,7 +66,10 @@
 		methods: {
 			update(updates) {
 
-				return apiManager.apps.update(this.appData, updates);
+				return apiManager.apps.update(this.appData, updates)
+				.then(()=>{
+					return this.$store.dispatch('updateApps');
+				});
 			}
 		}
 	}
