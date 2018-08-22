@@ -11,7 +11,7 @@
 				<div class="modal-body">
 					<SettingsInfo :appData="appData" :showVersions="showVersions" :clients="clients"/>
 					<div v-if="!isAdmin" class="alert alert-primary" role="alert">
-						<i class="fa fa-info-circle"></i> Please contact an administrator to change any of these settings
+						<i class="fa fa-info-circle"></i> Please contact an administrator to change application settings
 					</div>
 					<SettingsForm :isAdmin="isAdmin"
 												:close="close"
