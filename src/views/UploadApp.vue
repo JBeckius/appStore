@@ -120,13 +120,13 @@
 						</div>
 					</div>
 					<div class="form-row align-items-center">
-						<Checkbox v-model="disablePreviousVersion" name="disablePreviousVersion" label="Disable Previous Version" />
+						<Checkbox v-if="relatedApp" v-model="disablePreviousVersions" name="disablePreviousVersions" label="Disable Previous Versions" />
 						<Checkbox v-model="visible" name="visible" label="Visible Within Directory" :checked="visible"/>
 					</div>
 				</div>
 			</div>
 			<!-- <SecuritySettings :update="updateSecurity"/> -->
-			<button v-on:click="" class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="submit">Upload</button>
+			<button v-on:click="" class="btn btn-primary btn-center mt-3"  id="uploadAppBtn" type="submit">{{relatedApp ? 'Update' : 'Upload'}}</button>
 		</form>
 		<div class="uploadAppMessage"></div>
 	</div>
