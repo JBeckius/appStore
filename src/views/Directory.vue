@@ -26,7 +26,7 @@
 			</div>
 			<div class="noApps" v-if="apps.length == 0">There are no apps to view</div>
 		</div>
-		<SettingsModal v-if="showSettings" :appData="currentApp" :close="deselectApp" :showVersions="toggleVersionsModal"/>
+		<SettingsModal v-if="showSettings && !showVersions" :appData="currentApp" :close="deselectApp" :showVersions="toggleVersionsModal"/>
 		<VersionHistoryModal v-if="showVersions" :appData="currentApp" :close="toggleVersionsModal"/>
 	</div>
 </template>

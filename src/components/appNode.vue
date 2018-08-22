@@ -58,7 +58,7 @@ export default {
 			return path === '' ? 'android' : 'ios';
 		},
 		compatibleWithDevice(version) {
-			return (version.path == '' && !this.iOS) 		 ? true :
+			return (version.path === '' && !this.iOS) 		 ? true :
 						 (version.path.length > 0 && this.iOS) ? true
 						 																			 : false;
 		}
@@ -72,7 +72,7 @@ export default {
 		currentVersion() {
 			if(!this.appData.versions[0]) return {downloadEnabled: 0, version: '1', path: ''};
 			return this.appData.versions.filter(version=>this.compatibleWithDevice(version))
-																	.find(version => version.downloadEnabled === 1) || { downloadEnabled: 0, version: this.appData.versions[0], path: this.appData.versions[0].path};
+																	.find(version => version.downloadEnabled === 1) || { downloadEnabled: 0, version: this.appData.versions[0].version, path: this.appData.versions[0].path};
 		},
 		imgPath() {
 			let baseURL = process.env.VUE_APP_BASE_CDN_URL;

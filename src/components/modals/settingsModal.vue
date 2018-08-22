@@ -9,7 +9,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<SettingsInfo :appData="appData" :showVersions="showVersions"/>
+					<SettingsInfo :appData="appData" :showVersions="showVersions" :clients="clients"/>
 					<div v-if="!isAdmin" class="alert alert-primary" role="alert">
 						<i class="fa fa-info-circle"></i> Please contact an administrator to change any of these settings
 					</div>
@@ -61,6 +61,9 @@
 					visible: this.appData.visible,
 					downloadEnabled: this.appData.downloadEnabled
 				}
+			},
+			clients() {
+				return this.$store.state.clients;
 			}
 		},
 		methods: {

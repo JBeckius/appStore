@@ -10,6 +10,8 @@
 			</p>
 			<p class="mb-0">Last Updated: {{lastUpdatedDate}}</p>
 			<p class="mb-0">File Size: {{fileSize}} MB</p>
+			<p class="mb-0">Client: {{clientName}}</p>
+			<p class="mb-0"> Group: {{appData.versions[0].name}}</p>
 		</div>
 		<div class="col-md-8">
 			<p class="mb-0">{{appData.description}}</p>
@@ -22,11 +24,19 @@
 
 	export default {
 		name: 'settingsInfo',
-		props: ['appData', 'showVersions'],
-		mixins: [appModalMixin]
+		props: ['appData', 'showVersions', 'clients'],
+		mixins: [appModalMixin],
+		computed: {
+			clientName() {
+				let client = this.clients.find((client)=>client.id === this.appData.clientId);
+				return client ? client.name : 'None';
+			}
+		}
 	}
 </script>
 
 <style scoped>
-
+ p {
+	 text-align: left;
+ }
 </style>
