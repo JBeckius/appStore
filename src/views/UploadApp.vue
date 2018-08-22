@@ -152,7 +152,7 @@
 		},
 		data() {
 			return {
-				disablePreviousVersion: false,
+				disablePreviousVersions: false,
 				subdirectory: null,
 				applicationVersion: null,
 				relatedApp: null,
@@ -268,6 +268,7 @@
 						}, (this.relatedApp) ? {
 							applicationId : this.applicationId,
 							clientId :this.clientId,
+							disablePreviousVersions: this.disablePreviousVersions
 							//clientAdIds : this.clients.find(client=> client.id === this.clientId)
 						} : null)
 						if(versionIds.length > 0) opts.versionIds = versionIds;
@@ -336,9 +337,9 @@
 		},
 		watch: {
 			relatedApp() {
-				let app = this.relatedApp;
-				this.subdirectory = app.groups[0] || [];
-				this.applicationVersion = app.versions[0] ? app.versions[0].version : null;
+				let app = this.relatedApp || {};
+				this.subdirectory = app.groups ? app.groups[0] : [];
+				this.applicationVersion = app.versions && app.versions[0] ? app.versions[0].version : null;
 				this.applicationName = app.applicationName || null;
 				this.description = app.description || null;
 				this.bundleId = app.bundleId || null;
@@ -346,9 +347,9 @@
 				this.dateEnd = app.dateEnd || null;
 				this.visible = app.visible || true;
 				this.downloadEnabled = app.downloadEnabled || true;
-				this.versionIds = app.versions.map(version=>version.id) || [];
-				this.imageId = app.image.id || null;
-				this.groupIds = app.groups[0] ? [app.groups[0].id] : [];
+				this.versionIds = app.versions ? app.versions.map(version=>version.id) : [];
+				this.imageId = app.image ? app.image.id : null;
+				this.groupIds = app.groups && app.groups[0] ? [app.groups[0].id] : [];
 				this.applicationId = app.applicationId || null;
 				this.clientId = app.clientId || null;
 				// this.clientAdIds = app.clientADs.map(client => client.adName) || null;
