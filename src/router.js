@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import About from './views/About.vue'
+// import Home from './views/Home.vue'
+// import About from './views/About.vue'
 import Directory from './views/Directory.vue'
 import UploadApp from './views/UploadApp.vue'
-import DownloadReport from './views/DownloadReport.vue'
-import ConfigMapping from './views/ConfigMapping.vue'
+// import DownloadReport from './views/DownloadReport.vue'
+// import ConfigMapping from './views/ConfigMapping.vue'
 import Users from './views/Users.vue';
 import Login from './views/Login.vue'
 import Store from './store/store.js'
@@ -15,11 +15,16 @@ Vue.use(Router)
 let router =  new Router({
 	base: '/app',
   routes: [
-    {
-      path: '/home',
-      name: 'home',
-      component: Home
-    },
+    // {
+    //   path: '/home',
+    //   name: 'home',
+    //   component: Home
+    // },
+		// {
+		// 	path: '/about',
+		// 	name: 'about',
+		// 	component: About
+		// },
 		{
 			path: '/login',
 			name: 'login',
@@ -28,11 +33,6 @@ let router =  new Router({
 				guest: true
 			}
 		},
-    {
-      path: '/about',
-      name: 'about',
-      component: About
-    },
 		{
 			path: '/',
 			name: 'directory',
@@ -49,22 +49,22 @@ let router =  new Router({
 				requiresAuth: true
 			}
 		},
-		{
-			path: '/downloadReport',
-			name: 'downloadReport',
-			component: DownloadReport,
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/configMapping',
-			name: 'configMapping',
-			component: ConfigMapping,
-			meta: {
-				requiresAuth: true
-			}
-		},
+		// {
+		// 	path: '/downloadReport',
+		// 	name: 'downloadReport',
+		// 	component: DownloadReport,
+		// 	meta: {
+		// 		requiresAuth: true
+		// 	}
+		// },
+		// {
+		// 	path: '/configMapping',
+		// 	name: 'configMapping',
+		// 	component: ConfigMapping,
+		// 	meta: {
+		// 		requiresAuth: true
+		// 	}
+		// },
 		{
 			path: '/users',
 			name: 'users',
