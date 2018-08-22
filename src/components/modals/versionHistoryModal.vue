@@ -53,7 +53,7 @@
 				<div class="modal-footer">
 						<span class="m-auto">
 							<button type="button" v-on:click="close" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" v-on:click="submitUpdates" class="btn btn-primary" :disabled="!isAdmin">Update</button>
+							<button type="button" v-on:click="submitUpdates" class="btn btn-primary update" :disabled="!isAdmin">Update</button>
 						</span>
 				</div>
 			</div>
@@ -143,5 +143,8 @@
 	}
 	#versionHistoryForm {
 		pointer-events: initial;
+	}
+	.modal-footer {
+		margin-bottom: 15px;
 	}
 </style>
