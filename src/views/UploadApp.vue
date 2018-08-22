@@ -276,6 +276,7 @@
 						else return apiManager.apps.upload(opts);
 					})
 					.then(resp => {
+						let applicationId = resp.data.applicationId;
 						return apiManager.apps.addGroups(this.applicationId, this.groupIds)
 					})
 					.then(resp => this.$router.push('/'));
