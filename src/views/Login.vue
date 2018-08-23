@@ -25,6 +25,7 @@
 		<div class="loginErrorMsg"></div>
 		<button type="submit" class="btn btn-primary btn-center">Submit</button>
 	</form>
+	<p v-if="loginFailed" class="loginFail">Credentials incorrect. Please try again.</p>
 </div>
 </template>
 
@@ -34,7 +35,8 @@
 		data() {
 			return {
 				password: null,
-				username: null
+				username: null,
+				loginFailed: false
 			}
 		},
 		methods: {
@@ -49,7 +51,7 @@
 					.then(resp => {
 						this.$router.push('/');
 					})
-					.catch(err => console.log('did not get authed: ', err));
+					.catch(err => this.loginFailed = true);
 			},
 			calcPath(path) {
 				let baseURL = process.env.VUE_APP_BASE_CDN_URL;
@@ -62,6 +64,11 @@
 <style scoped>
 	img.img-fluid{
 		margin-top: 10px;
+	}
+
+	.loginFail {
+		margin-top: 15px;
+		color: red;
 	}
 
 </style>
