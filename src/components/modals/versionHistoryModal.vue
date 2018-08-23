@@ -21,7 +21,7 @@
 								<thead>
 								<tr>
 									<th scope="col">Version</th>
-									<!-- <th scope="col">Uploaded Date</th> -->
+									<th scope="col">Uploaded Date</th>
 									<th scope="col">File Size</th>
 									<th scope="col">Downloadable</th>
 									<th scope="col">Action</th>
