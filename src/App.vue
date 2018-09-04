@@ -43,6 +43,7 @@
 <style>
 body {
 	width: 100%;
+	padding-bottom: 20px;
 }
 .row {
 	margin: 0 !important;

@@ -372,4 +372,14 @@
 </script>
 
 <style scoped>
+	.datePicker {
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		border-width: 0;
+	}
+
+	/* .datePicker input {
+		width: 100%;
+	} */
 </style>
