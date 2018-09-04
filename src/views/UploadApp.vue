@@ -250,8 +250,20 @@
 					};
 					return apiManager.executables.upload(opts);
 				});
-				Promise.all(uploadExeProms)
+
+				uploadExeProms.reduce((promiseChain, currentTask) => {
+					return promiseChain.then(chainResults =>
+						currentTask.then(currentResult =>
+							[ ...chainResults, currentResult ]
+						)
+					);
+				}, Promise.resolve([]))
+				// acc.then(res => {
+				// 	return curr.then(currRes => [ ...res, currRes])
+				// }), Promise.resolve([]))
+				//Promise.all(uploadExeProms)
 					.then(resps => {
+						console.log('upload resps: ', resps);
 						let versionIds = resps.map(resp => resp.data.id);
 
 						let opts = Object.assign({
@@ -278,7 +290,7 @@
 					})
 					.then(resp => {
 						let applicationId = resp.data.applicationId;
-						return apiManager.apps.addGroups(this.applicationId, this.groupIds)
+						return apiManager.apps.addGroups(applicationId, [this.subdirectory.id])
 					})
 					.then(resp => this.$router.push('/'));
 
