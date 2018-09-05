@@ -1,5 +1,5 @@
 <template>
-	<div class="col-sm-6">
+	<div class="col-sm-6 appNode">
 		<div class="card">
 			<div class="row">
 				<div class="col-sm-4">
@@ -103,5 +103,17 @@ export default {
 		color: red;
 		margin: 0;
 		padding: 0;
+	}
+	.appNode {
+		max-width: 400px;
+		padding: 10px;
+	}
+	.btn {
+		margin: 5px;
+	}
+	.col-sm-4 {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 	}
 </style>

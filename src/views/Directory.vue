@@ -99,4 +99,9 @@ export default {
 	button.btn {
 		z-index: 0;
 	}
+	.appsDirectory {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
 </style>
