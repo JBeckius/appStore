@@ -53,7 +53,7 @@
 				<div class="modal-footer">
 						<span class="m-auto">
 							<button type="button" v-on:click="close" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" v-on:click="submitUpdates" class="btn btn-primary update" :disabled="!isAdmin">Update</button>
+							<!-- <button type="button" v-on:click="submitUpdates" class="btn btn-primary update" :disabled="!isAdmin">Update</button> -->
 						</span>
 				</div>
 			</div>
@@ -93,21 +93,23 @@
 			},
 			updateVersion(versionId, isEnabled) {
 				let enabledInt = isEnabled ? 1 : 0;
-				this.versions.find(version=>version.id===versionId).downloadEnabled = enabledInt;
-				if( !this.updated.find(id => versionId === id) ) this.updated.push(versionId);
+				let version = this.versions.find(version=>version.id===versionId)
+				version.downloadEnabled = enabledInt;
+				return apiManager.executables.put('', version);
+				// if( !this.updated.find(id => versionId === id) ) this.updated.push(versionId);
 			},
-			submitUpdates() {
-				let updatedVersions = this.versions.filter( version => this.updated.includes(version.id));
-				let updatePromises = updatedVersions.map(version => apiManager.executables.put('', version));
-				Promise.all(updatePromises)
-					.catch(err => {
-						console.log('failed to update versions: ', err);
-					})
-					.then(respArr => {
-						return this.$store.dispatch('updateApps');
-					})
-
-			}
+			// submitUpdates() {
+			// 	let updatedVersions = this.versions.filter( version => this.updated.includes(version.id));
+			// 	let updatePromises = updatedVersions.map(version => apiManager.executables.put('', version));
+			// 	Promise.all(updatePromises)
+			// 		.catch(err => {
+			// 			console.log('failed to update versions: ', err);
+			// 		})
+			// 		.then(respArr => {
+			// 			return this.$store.dispatch('updateApps');
+			// 		})
+			//
+			// }
 		},
 		computed: {
 			totalPages() {
