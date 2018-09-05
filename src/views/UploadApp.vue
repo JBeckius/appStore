@@ -45,7 +45,7 @@
 							<div class="input-group mb-3">
 								<!-- <input v-model="appIcon" type="text" class="form-control" id="appIcon" name="appIcon"
 											 placeholder="Upload Application Icon"> -->
-								<FileUpload :fileType="fileTypes.img" name="appIconFile" :upload="uploadImg()"/>
+								<FileUpload :key="relatedApp ? relatedApp.applicationId : 0" :fileType="fileTypes.img" name="appIconFile" :upload="uploadImg()"/>
 								<div class="input-group-append">
 									<!-- <button class="btn btn-outline-secondary" name="appIconFileBtn"
 													id="appIconFileBtn"
@@ -63,7 +63,7 @@
 								<!-- <input v-model="ipaFileName" type="text" class="form-control" id="ipaFileName" name="ipaFileName"
 											 placeholder="Enterprise Distribution File(.IPA)"> -->
 
-								<FileUpload :fileType="fileTypes.ipa" name="ipaFile" :upload="loadIpa"/>
+								<FileUpload :key="relatedApp ? relatedApp.applicationId : 0" :fileType="fileTypes.ipa" name="ipaFile" :upload="loadIpa"/>
 
 								<div class="input-group-append">
 									<!-- <button class="btn btn-outline-secondary" name="ipaFileBtn" id="ipaFileBtn"
@@ -76,7 +76,7 @@
 							<div class="input-group mb-3">
 								<!-- <input v-model="apkFileName" type="text" class="form-control" name="apkFileName" id="apkFileName"
 											 placeholder="Android File(.APk)"> -->
-								<FileUpload :fileType="fileTypes.apk" name="apkFile" :upload="loadApk"
+								<FileUpload :key="relatedApp ? relatedApp.applicationId : 0":fileType="fileTypes.apk" name="apkFile" :upload="loadApk"
 								/>
 								<div class="input-group-append">
 									<!-- <button class="btn btn-outline-secondary" name="apkFileBtn" id="apkFileBtn"
