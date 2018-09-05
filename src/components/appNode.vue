@@ -13,8 +13,8 @@
 					<button class="btn btn-primary settingsBtn" :data-id="appData.applicationId" v-on:click="select()">
 						Settings
 					</button>
-					<a v-if="iOS && currentVersion.downloadEnabled" :href="href" class="btn btn-secondary active" :disabled="currentVersion">Download</a>
-					<a v-if="!iOS" v-on:click="downloadApp" class="btn btn-secondary active downloadBtn">Download</a>
+					<a v-if="iOS && appData.downloadEnabled" :href="href" class="btn btn-secondary active" :disabled="currentVersion">Download</a>
+					<a v-if="!iOS && appData.downloadEnabled" v-on:click="downloadApp" class="btn btn-secondary active downloadBtn">Download</a>
 					<p class="noApp" v-if="noApp">No download available for this device type</p>
 				</div>
 			</div>
