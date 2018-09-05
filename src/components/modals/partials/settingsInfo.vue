@@ -4,7 +4,8 @@
 			<h4>{{appData.applicationName}}</h4>
 			<p class="mb-0 description">{{appData.description}}</p>
 			<p class="mb-0">Version {{latestVersion}}
-				<button class="btn btn-link font-weight-normal" data-toggle="modal"
+				<button v-if="isAdmin || appData.downloadEnabled"
+								class="btn btn-link font-weight-normal" data-toggle="modal"
 								data-target="#versionHistoryModal"
 								v-on:click="showVersions">Version History
 				</button>
@@ -32,6 +33,9 @@
 			clientName() {
 				let client = this.clients.find((client)=>client.id === this.appData.clientId);
 				return client ? client.name : 'None';
+			},
+			isAdmin() {
+				return this.$store.getters.isAdmin;
 			}
 		}
 	}
