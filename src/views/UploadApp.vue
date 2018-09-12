@@ -350,7 +350,7 @@
 		watch: {
 			relatedApp() {
 				let app = this.relatedApp || {};
-				this.subdirectory = app.groups ? app.groups[0] : [];
+				this.subdirectory = app.groups ? app.groups[(app.groups.length - 1)] : [];
 				this.applicationVersion = app.versions && app.versions[0] ? app.versions[0].version : null;
 				this.applicationName = app.applicationName || null;
 				this.description = app.description || null;
