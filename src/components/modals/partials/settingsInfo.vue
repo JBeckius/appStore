@@ -13,7 +13,7 @@
 			<p class="mb-0">Last Updated: {{lastUpdatedDate}}</p>
 			<p class="mb-0">File Size: {{fileSize}} MB</p>
 			<p class="mb-0">Client: {{clientName}}</p>
-			<p class="mb-0"> Group: {{appData.versions[0].name}}</p>
+			<p class="mb-0"> Group: {{appData.groups[0].name}}</p>
 			<hr />
 		<!-- </div> -->
 		<!-- <div class="col-md-8">
